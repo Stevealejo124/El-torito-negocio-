@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Empleados · El Torito ASADOS</title>
+  <meta name="description" content="Empleados de El Torito ASADOS.">
+
+  <!-- PWA -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#4A1002">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="El Torito">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="apple-touch-icon" href="icono-apple-180.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="icono-32.png">
+
+  <link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+  <a class="salto-contenido" href="#contenido">Ir al contenido</a>
+
+  <header class="barra">
+    <a class="barra__marca" href="index.html">
+      <img class="barra__icono" src="icono-192.png" alt="" width="38" height="38">
+      <span>
+        <span class="barra__titulo">Empleados</span>
+        <span class="barra__sub">El Torito ASADOS</span>
+      </span>
+    </a>
+    <a class="barra__volver" href="index.html">Inicio</a>
+  </header>
+
+  <main class="contenedor" id="contenido">
+
+    <p class="estado" id="estadoConexion" hidden>
+      <span class="estado__punto" aria-hidden="true"></span>
+      <span id="estadoConexionTexto">Con conexión</span>
+    </p>
+
+    <section class="obras">
+      <p class="obras__emoji" aria-hidden="true">👨‍🍳</p>
+      <h1 class="obras__titulo">Empleados</h1>
+      <p class="obras__texto">
+        Esta pantalla se desarrolla en la siguiente etapa. Aquí se llevará el control
+        del personal que trabaja en El Torito.
+      </p>
+      <ul class="lista">
+        <li>Lista del personal con su puesto.</li>
+        <li>Turnos y días de trabajo.</li>
+        <li>Teléfonos y datos de contacto.</li>
+      </ul>
+      <a class="boton boton--fantasma" href="index.html">Volver al inicio</a>
+    </section>
+
+    <footer class="pie">
+      <p><strong>El Torito ASADOS</strong> · Sopas y asados</p>
+      <p>© <span id="anio">2026</span> · Funciona sin conexión</p>
+    </footer>
+
+  </main>
+
+  <script src="app.js" defer></script>
+</body>
+</html>

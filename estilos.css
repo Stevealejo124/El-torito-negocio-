@@ -1,0 +1,425 @@
+/* ===========================================================
+   El Torito ASADOS — estilos base
+   Paleta tomada del logo: vino, dorado, crema y madera.
+   =========================================================== */
+
+:root {
+  --vino: #4a1002;
+  --vino-medio: #7a1c08;
+  --rojo: #a3280f;
+  --dorado: #f3b020;
+  --dorado-claro: #ffd166;
+  --crema: #fae9cb;
+  --crema-claro: #fff7e8;
+  --madera: #6b3410;
+  --tinta: #2b1a0f;
+  --tinta-suave: #6d5443;
+  --sombra: 0 6px 18px rgba(74, 16, 2, 0.16);
+  --sombra-fuerte: 0 10px 26px rgba(74, 16, 2, 0.28);
+  --radio: 18px;
+  --radio-lg: 26px;
+}
+
+* { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  min-height: 100dvh;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  color: var(--tinta);
+  background-color: var(--crema);
+  background-image:
+    radial-gradient(circle at 12% 0%, #fff4dd 0%, rgba(255, 244, 221, 0) 45%),
+    radial-gradient(circle at 88% 100%, #f6dcae 0%, rgba(246, 220, 174, 0) 55%);
+  background-attachment: fixed;
+  -webkit-tap-highlight-color: transparent;
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+img { max-width: 100%; display: block; }
+
+a { color: var(--vino-medio); }
+
+/* ---------------- Barra superior ---------------- */
+.barra {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: calc(10px + env(safe-area-inset-top)) 16px 10px;
+  background: linear-gradient(180deg, var(--vino) 0%, #3b0d02 100%);
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.28);
+  color: var(--crema-claro);
+}
+
+.barra__marca {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: inherit;
+  min-width: 0;
+}
+
+.barra__icono {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 2px solid var(--dorado);
+  flex: 0 0 auto;
+}
+
+.barra__marca > span { min-width: 0; overflow: hidden; }
+
+.barra__titulo {
+  display: block;
+  font-size: 1.05rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.barra__sub {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--dorado-claro);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.barra__volver {
+  margin-left: auto;
+  font-size: 0.86rem;
+  font-weight: 700;
+  color: var(--vino);
+  background: var(--dorado);
+  border-radius: 999px;
+  padding: 8px 14px;
+  text-decoration: none;
+  white-space: nowrap;
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.25);
+}
+
+.barra__volver:hover { background: var(--dorado-claro); }
+
+/* ---------------- Contenido ---------------- */
+.contenedor {
+  width: 100%;
+  max-width: 620px;
+  margin: 0 auto;
+  padding: 20px 16px 36px;
+}
+
+/* ---------------- Portada ---------------- */
+.portada {
+  text-align: center;
+  margin-bottom: 26px;
+}
+
+.portada__logo {
+  width: 100%;
+  max-width: 250px;
+  margin: 0 auto 14px;
+  border-radius: var(--radio-lg);
+  box-shadow: var(--sombra-fuerte);
+  border: 4px solid #fff;
+  background: #fff;
+}
+
+.portada__titulo {
+  margin: 0 0 4px;
+  font-size: clamp(1.5rem, 5vw, 1.9rem);
+  font-weight: 900;
+  letter-spacing: 0.01em;
+  color: var(--vino);
+}
+
+.portada__lema {
+  margin: 0;
+  font-size: 0.86rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--tinta-suave);
+}
+
+/* ---------------- Menú principal ---------------- */
+.menu {
+  display: grid;
+  gap: 14px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tarjeta {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 18px;
+  background: linear-gradient(160deg, #ffffff 0%, var(--crema-claro) 100%);
+  border: 2px solid rgba(243, 176, 32, 0.45);
+  border-radius: var(--radio);
+  box-shadow: var(--sombra);
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.14s ease, box-shadow 0.14s ease, border-color 0.14s ease;
+}
+
+.tarjeta:hover,
+.tarjeta:focus-visible {
+  transform: translateY(-2px);
+  box-shadow: var(--sombra-fuerte);
+  border-color: var(--dorado);
+  outline: none;
+}
+
+.tarjeta:active { transform: translateY(0) scale(0.985); }
+
+.tarjeta__icono {
+  flex: 0 0 auto;
+  width: 54px;
+  height: 54px;
+  border-radius: 16px;
+  display: grid;
+  place-items: center;
+  background: radial-gradient(circle at 30% 25%, var(--vino-medio), var(--vino));
+  box-shadow: inset 0 0 0 2px rgba(243, 176, 32, 0.55);
+}
+
+.tarjeta__icono svg {
+  width: 30px;
+  height: 30px;
+  fill: none;
+  stroke: var(--dorado-claro);
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.tarjeta__texto {
+  display: block;
+  min-width: 0;
+}
+
+.tarjeta__titulo {
+  display: block;
+  margin: 0 0 3px;
+  font-size: 1.06rem;
+  font-weight: 800;
+  color: var(--vino);
+}
+
+.tarjeta__desc {
+  display: block;
+  margin: 0;
+  font-size: 0.85rem;
+  line-height: 1.35;
+  color: var(--tinta-suave);
+}
+
+.tarjeta__flecha {
+  display: block;
+  margin-left: auto;
+  font-size: 1.4rem;
+  color: var(--dorado);
+  font-weight: 900;
+  flex: 0 0 auto;
+}
+
+/* ---------------- Avisos (instalar / sin conexión) ---------------- */
+.panel {
+  margin-top: 22px;
+  padding: 16px;
+  border-radius: var(--radio);
+  background: #fff;
+  border: 2px dashed rgba(122, 28, 8, 0.28);
+  box-shadow: var(--sombra);
+}
+
+.panel__titulo {
+  margin: 0 0 6px;
+  font-size: 0.98rem;
+  font-weight: 800;
+  color: var(--vino);
+}
+
+.panel__texto {
+  margin: 0;
+  font-size: 0.88rem;
+  line-height: 1.45;
+  color: var(--tinta-suave);
+}
+
+.panel[hidden] { display: none; }
+
+.boton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 12px;
+  padding: 12px 20px;
+  border: 0;
+  border-radius: 999px;
+  font: inherit;
+  font-weight: 800;
+  font-size: 0.95rem;
+  color: var(--vino);
+  background: linear-gradient(180deg, var(--dorado-claro), var(--dorado));
+  box-shadow: 0 3px 0 #b98111, var(--sombra);
+  cursor: pointer;
+}
+
+.boton:active { transform: translateY(2px); box-shadow: 0 1px 0 #b98111; }
+
+.boton[hidden] { display: none; }
+
+.boton--fantasma {
+  background: transparent;
+  color: var(--vino-medio);
+  border: 2px solid rgba(122, 28, 8, 0.35);
+  box-shadow: none;
+  font-weight: 700;
+}
+
+.boton--fantasma:active { transform: none; }
+
+/* ---------------- Aviso de estado de conexión ---------------- */
+.estado {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 16px;
+  padding: 9px 14px;
+  border-radius: 999px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  background: #fde8c6;
+  color: #7a4a00;
+  border: 1px solid rgba(243, 176, 32, 0.7);
+}
+
+.estado__punto {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #2e9e4b;
+  flex: 0 0 auto;
+}
+
+.estado--offline {
+  background: #ffe0d9;
+  color: #8c1d05;
+  border-color: #e79a86;
+}
+
+.estado--offline .estado__punto { background: #b8220a; }
+
+.estado[hidden] { display: none; }
+
+/* ---------------- Página en construcción ---------------- */
+.obras {
+  text-align: center;
+  padding: 30px 20px 26px;
+  background: #fff;
+  border-radius: var(--radio-lg);
+  border: 3px solid rgba(243, 176, 32, 0.5);
+  box-shadow: var(--sombra);
+}
+
+.obras__emoji {
+  font-size: 3rem;
+  line-height: 1;
+  margin-bottom: 10px;
+}
+
+.obras__titulo {
+  margin: 0 0 8px;
+  font-size: 1.35rem;
+  font-weight: 900;
+  color: var(--vino);
+}
+
+.obras__texto {
+  margin: 0 auto 18px;
+  max-width: 42ch;
+  font-size: 0.94rem;
+  line-height: 1.5;
+  color: var(--tinta-suave);
+}
+
+.lista {
+  text-align: left;
+  max-width: 400px;
+  margin: 0 auto 20px;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 8px;
+}
+
+.lista li {
+  display: flex;
+  gap: 9px;
+  align-items: flex-start;
+  font-size: 0.9rem;
+  line-height: 1.4;
+  color: var(--tinta);
+}
+
+.lista li::before {
+  content: "•";
+  color: var(--dorado);
+  font-weight: 900;
+  font-size: 1.2rem;
+  line-height: 1.1;
+}
+
+/* ---------------- Pie ---------------- */
+.pie {
+  margin-top: 30px;
+  padding-top: 16px;
+  border-top: 2px dotted rgba(122, 28, 8, 0.25);
+  text-align: center;
+  font-size: 0.78rem;
+  color: var(--tinta-suave);
+}
+
+.pie strong { color: var(--vino-medio); }
+
+/* ---------------- Accesibilidad / movimiento ---------------- */
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; animation: none !important; }
+}
+
+.salto-contenido {
+  position: absolute;
+  left: -9999px;
+}
+
+.salto-contenido:focus {
+  left: 12px;
+  top: 12px;
+  z-index: 50;
+  padding: 10px 14px;
+  background: var(--dorado);
+  color: var(--vino);
+  border-radius: 10px;
+  font-weight: 800;
+}
+
+/* ---------------- Pantallas grandes ---------------- */
+@media (min-width: 720px) {
+  .contenedor { max-width: 760px; padding-top: 30px; }
+  .portada__logo { max-width: 290px; }
+}

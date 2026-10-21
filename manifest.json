@@ -1,0 +1,66 @@
+{
+  "id": "./",
+  "name": "El Torito ASADOS",
+  "short_name": "El Torito",
+  "description": "Sopas y asados El Torito. Pedidos, empleados y administración en una sola app.",
+  "lang": "es",
+  "dir": "ltr",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "display_override": ["standalone", "minimal-ui", "browser"],
+  "orientation": "portrait-primary",
+  "background_color": "#FAE9CB",
+  "theme_color": "#4A1002",
+  "categories": ["food", "business", "productivity"],
+  "icons": [
+    {
+      "src": "icono-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icono-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icono-maskable-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "icono-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Pedidos",
+      "short_name": "Pedidos",
+      "description": "Tomar y consultar pedidos",
+      "url": "./pedidos.html",
+      "icons": [{ "src": "icono-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Empleados",
+      "short_name": "Empleados",
+      "description": "Personal del negocio",
+      "url": "./empleados.html",
+      "icons": [{ "src": "icono-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Administración",
+      "short_name": "Admin",
+      "description": "Reportes y configuración",
+      "url": "./administracion.html",
+      "icons": [{ "src": "icono-192.png", "sizes": "192x192" }]
+    }
+  ],
+  "prefer_related_applications": false
+}

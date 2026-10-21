@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>El Torito ASADOS</title>
+  <meta name="description" content="El Torito ASADOS — Sopas y asados. Pedidos, empleados y administración en una sola app.">
+
+  <!-- PWA -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#4A1002">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="El Torito">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="apple-touch-icon" href="icono-apple-180.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="icono-32.png">
+  <link rel="icon" type="image/png" sizes="64x64" href="icono-64.png">
+
+  <link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+  <a class="salto-contenido" href="#menu">Ir al menú</a>
+
+  <header class="barra">
+    <a class="barra__marca" href="index.html">
+      <img class="barra__icono" src="icono-192.png" alt="" width="38" height="38">
+      <span>
+        <span class="barra__titulo">El Torito ASADOS</span>
+        <span class="barra__sub">Sopas y asados</span>
+      </span>
+    </a>
+  </header>
+
+  <main class="contenedor">
+
+    <p class="estado" id="estadoConexion" hidden>
+      <span class="estado__punto" aria-hidden="true"></span>
+      <span id="estadoConexionTexto">Con conexión</span>
+    </p>
+
+    <section class="portada">
+      <img class="portada__logo" src="logo.jpg" alt="Logotipo de El Torito: un torito negro con un plato de sopa y carne asada">
+      <h1 class="portada__titulo">El Torito ASADOS</h1>
+      <p class="portada__lema">Sabor que te hace volver</p>
+    </section>
+
+    <nav id="menu" aria-label="Menú principal">
+      <ul class="menu">
+        <li>
+          <a class="tarjeta" href="pedidos.html">
+            <span class="tarjeta__icono" aria-hidden="true">
+              <svg viewBox="0 0 24 24">
+                <path d="M4 8h16l-1.4 10.2a2 2 0 0 1-2 1.8H7.4a2 2 0 0 1-2-1.8L4 8Z"/>
+                <path d="M8.5 8V6.5a3.5 3.5 0 0 1 7 0V8"/>
+                <path d="M9.5 12.5h5"/>
+              </svg>
+            </span>
+            <span class="tarjeta__texto">
+              <span class="tarjeta__titulo">Pedidos</span>
+              <span class="tarjeta__desc">Tomar pedidos y consultar lo que está en curso.</span>
+            </span>
+            <span class="tarjeta__flecha" aria-hidden="true">›</span>
+          </a>
+        </li>
+
+        <li>
+          <a class="tarjeta" href="empleados.html">
+            <span class="tarjeta__icono" aria-hidden="true">
+              <svg viewBox="0 0 24 24">
+                <circle cx="9" cy="8" r="3.2"/>
+                <path d="M3.5 20v-1.2A4.8 4.8 0 0 1 8.3 14h1.4a4.8 4.8 0 0 1 4.8 4.8V20"/>
+                <path d="M16.5 5.4a3.2 3.2 0 0 1 0 6.2"/>
+                <path d="M18 14.2a4.8 4.8 0 0 1 2.5 4.2V20"/>
+              </svg>
+            </span>
+            <span class="tarjeta__texto">
+              <span class="tarjeta__titulo">Empleados</span>
+              <span class="tarjeta__desc">Personal, turnos y datos de contacto del equipo.</span>
+            </span>
+            <span class="tarjeta__flecha" aria-hidden="true">›</span>
+          </a>
+        </li>
+
+        <li>
+          <a class="tarjeta" href="administracion.html">
+            <span class="tarjeta__icono" aria-hidden="true">
+              <svg viewBox="0 0 24 24">
+                <path d="M4 20V4"/>
+                <path d="M4 20h16"/>
+                <path d="M8 20v-6"/>
+                <path d="M13 20V9"/>
+                <path d="M18 20v-4"/>
+              </svg>
+            </span>
+            <span class="tarjeta__texto">
+              <span class="tarjeta__titulo">Administración</span>
+              <span class="tarjeta__desc">Cortes, reportes y configuración del negocio.</span>
+            </span>
+            <span class="tarjeta__flecha" aria-hidden="true">›</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+
+    <section class="panel" id="panelInstalar" hidden>
+      <h2 class="panel__titulo">Instala la app en tu celular</h2>
+      <p class="panel__texto" id="notaInstalar">Ábrela desde el ícono, sin navegador y con acceso sin internet.</p>
+      <button class="boton" id="botonInstalar" type="button">Instalar app</button>
+    </section>
+
+    <footer class="pie">
+      <p><strong>El Torito ASADOS</strong> · Sopas y asados</p>
+      <p>© <span id="anio">2026</span> · Funciona sin conexión · Datos guardados en este dispositivo</p>
+    </footer>
+
+  </main>
+
+  <script src="app.js" defer></script>
+</body>
+</html>
