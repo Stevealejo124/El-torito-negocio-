@@ -3,64 +3,1113 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>Empleados · El Torito ASADOS</title>
-  <meta name="description" content="Empleados de El Torito ASADOS.">
+  <title>Pedidos · El Torito ASADOS</title>
+  <meta name="description" content="Panel de pedidos para el personal de El Torito ASADOS.">
+  <meta name="theme-color" content="#4A1002">
 
   <!-- PWA -->
   <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#4A1002">
-  <meta name="mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-title" content="El Torito">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <link rel="apple-touch-icon" href="icono-apple-180.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="icono-32.png">
+  <link rel="apple-touch-icon" href="icon-192.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 
-  <link rel="stylesheet" href="estilos.css">
+  <style>
+    /* ---------- Paleta y base ---------- */
+    :root {
+      --cafe: #3b1e08;
+      --cafe-oscuro: #2a1405;
+      --vino: #4a1002;
+      --dorado: #f3b020;
+      --dorado-claro: #ffd166;
+      --crema: #fae9cb;
+      --fondo: #fbf4e6;
+      --tinta: #2b1a0f;
+      --tinta-suave: #6d5443;
+      --ok: #1f9d4f;
+      --rojo: #b8220a;
+      --info: #1d5fb0;
+      --sombra: 0 6px 18px rgba(59, 30, 8, 0.14);
+      --radio: 16px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+
+    html { -webkit-text-size-adjust: 100%; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      min-height: 100dvh;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      font-size: 16px;
+      line-height: 1.45;
+      color: var(--tinta);
+      background-color: var(--fondo);
+      background-image:
+        radial-gradient(circle at 10% 0%, #fff8ea 0%, rgba(255, 248, 234, 0) 45%),
+        radial-gradient(circle at 90% 100%, #f6e3c2 0%, rgba(246, 227, 194, 0) 55%);
+      background-attachment: fixed;
+      -webkit-tap-highlight-color: transparent;
+      padding-bottom: env(safe-area-inset-bottom);
+    }
+
+    img { max-width: 100%; display: block; }
+
+    a { color: var(--vino); }
+
+    /* ---------- Encabezado ---------- */
+    .barra {
+      position: sticky;
+      top: 0;
+      z-index: 30;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: calc(10px + env(safe-area-inset-top)) 14px 10px;
+      background: linear-gradient(180deg, var(--vino) 0%, var(--cafe-oscuro) 100%);
+      color: #fff8ec;
+      box-shadow: 0 3px 14px rgba(0, 0, 0, 0.32);
+    }
+
+    .barra__marca {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .barra__logo {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 2px solid var(--dorado);
+      flex: 0 0 auto;
+    }
+
+    .barra__texto { min-width: 0; overflow: hidden; }
+
+    .barra__titulo {
+      display: block;
+      margin: 0;
+      font-size: 1.02rem;
+      font-weight: 900;
+      letter-spacing: 0.02em;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .barra__sub {
+      display: block;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--dorado-claro);
+    }
+
+    .barra__acciones {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex: 0 0 auto;
+    }
+
+    .barra__boton {
+      font: inherit;
+      font-size: 0.82rem;
+      font-weight: 800;
+      color: var(--vino);
+      background: var(--dorado);
+      border: 0;
+      border-radius: 999px;
+      padding: 9px 14px;
+      text-decoration: none;
+      cursor: pointer;
+      white-space: nowrap;
+      box-shadow: 0 2px 0 rgba(0, 0, 0, 0.25);
+      touch-action: manipulation;
+    }
+
+    .barra__boton:active { transform: translateY(2px); box-shadow: none; }
+
+    .barra__boton--fantasma {
+      background: transparent;
+      color: var(--crema);
+      border: 1.5px solid rgba(250, 233, 203, 0.55);
+      box-shadow: none;
+      font-weight: 700;
+    }
+
+    /* ---------- Contenedor ---------- */
+    .contenedor {
+      width: 100%;
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 18px 14px 40px;
+    }
+
+    /* ---------- Tipografía de sección ---------- */
+    .titulo {
+      margin: 0 0 6px;
+      font-size: clamp(1.35rem, 5vw, 1.7rem);
+      font-weight: 900;
+      line-height: 1.15;
+      color: var(--vino);
+    }
+
+    .parrafo {
+      margin: 0 0 16px;
+      font-size: 0.92rem;
+      color: var(--tinta-suave);
+    }
+
+    /* ---------- Tarjetas ---------- */
+    .tarjeta {
+      margin: 0 0 16px;
+      padding: 16px;
+      background: #fff;
+      border: 2px solid rgba(243, 176, 32, 0.42);
+      border-radius: var(--radio);
+      box-shadow: var(--sombra);
+    }
+
+    .tarjeta__titulo {
+      margin: 0 0 12px;
+      font-size: 1rem;
+      font-weight: 900;
+      color: var(--vino);
+    }
+
+    /* ---------- Formularios ---------- */
+    .campo { display: block; margin: 0 0 14px; }
+
+    .campo__label {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 0.9rem;
+      font-weight: 800;
+    }
+
+    .campo__req { color: var(--rojo); }
+    .campo__opcional { font-size: 0.8rem; font-weight: 600; color: var(--tinta-suave); }
+
+    .campo__control {
+      display: block;
+      width: 100%;
+      min-height: 50px;
+      padding: 12px 14px;
+      font: inherit;
+      font-size: 16px;
+      color: var(--tinta);
+      background: #fffdf8;
+      border: 2px solid rgba(107, 52, 16, 0.26);
+      border-radius: 13px;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .campo__control::placeholder { color: #a08b78; }
+
+    .campo__control:focus {
+      outline: none;
+      background: #fff;
+      border-color: var(--dorado);
+      box-shadow: 0 0 0 4px rgba(243, 176, 32, 0.24);
+    }
+
+    textarea.campo__control { min-height: 88px; resize: vertical; }
+
+    .campo--error .campo__control {
+      border-color: var(--rojo);
+      background: #fff6f3;
+      box-shadow: 0 0 0 3px rgba(184, 34, 10, 0.13);
+    }
+
+    .campo__error {
+      margin: 6px 0 0;
+      font-size: 0.84rem;
+      font-weight: 700;
+      color: var(--rojo);
+    }
+
+    .campo__error::before { content: "⚠ "; }
+    .campo__error[hidden] { display: none; }
+
+    /* ---------- Opciones tipo tarjeta ---------- */
+    .opciones { display: grid; gap: 10px; margin: 0 0 14px; }
+
+    .opcion {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-height: 56px;
+      padding: 13px;
+      font-size: 1rem;
+      font-weight: 700;
+      background: #fffdf8;
+      border: 2px solid rgba(107, 52, 16, 0.22);
+      border-radius: 13px;
+      cursor: pointer;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+    }
+
+    .opcion input[type="radio"] {
+      appearance: none;
+      -webkit-appearance: none;
+      flex: 0 0 auto;
+      width: 24px;
+      height: 24px;
+      margin: 0;
+      display: grid;
+      place-content: center;
+      background: #fff;
+      border: 2px solid rgba(107, 52, 16, 0.45);
+      border-radius: 50%;
+    }
+
+    .opcion input[type="radio"]::before {
+      content: "";
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--vino);
+      transform: scale(0);
+      transition: transform 0.12s ease;
+    }
+
+    .opcion input[type="radio"]:checked::before { transform: scale(1); }
+
+    .opcion:has(input:checked) {
+      background: #fffdf3;
+      border-color: var(--dorado);
+      box-shadow: 0 0 0 3px rgba(243, 176, 32, 0.22);
+    }
+
+    .opcion:has(input:focus-visible) {
+      outline: 3px solid rgba(74, 16, 2, 0.35);
+      outline-offset: 2px;
+    }
+
+    /* ---------- Botones ---------- */
+    .boton {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      width: 100%;
+      min-height: 56px;
+      padding: 15px 20px;
+      font: inherit;
+      font-size: 1rem;
+      font-weight: 900;
+      color: var(--vino);
+      text-decoration: none;
+      background: linear-gradient(180deg, var(--dorado-claro), var(--dorado));
+      border: 0;
+      border-radius: 999px;
+      box-shadow: 0 4px 0 #b98111, var(--sombra);
+      cursor: pointer;
+      touch-action: manipulation;
+    }
+
+    .boton:active { transform: translateY(3px); box-shadow: 0 1px 0 #b98111; }
+
+    .boton:disabled {
+      opacity: 0.6;
+      box-shadow: none;
+      cursor: not-allowed;
+    }
+
+    .boton--secundario {
+      color: var(--vino);
+      background: #fff;
+      border: 2px solid rgba(74, 16, 2, 0.3);
+      box-shadow: none;
+      font-weight: 800;
+    }
+
+    .boton--chico {
+      width: auto;
+      min-height: 44px;
+      padding: 10px 16px;
+      font-size: 0.88rem;
+      box-shadow: 0 2px 0 #b98111;
+    }
+
+    .boton--verde {
+      color: #fff;
+      background: linear-gradient(180deg, #2fbe63, #1f9d4f);
+      box-shadow: 0 3px 0 #157a3a;
+    }
+
+    .boton--verde:active { box-shadow: none; }
+
+    /* ---------- Avisos ---------- */
+    .aviso {
+      margin: 0 0 14px;
+      padding: 12px 14px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      line-height: 1.4;
+      border-radius: 13px;
+      border: 2px solid;
+    }
+
+    .aviso--info { color: #6b4500; background: #fdecc9; border-color: rgba(243, 176, 32, 0.8); }
+    .aviso--error { color: #8c1d05; background: #ffe1da; border-color: #e79a86; }
+    .aviso--ok { color: #145c31; background: #dcf5e6; border-color: #86cfa5; }
+    .aviso[hidden] { display: none; }
+
+    /* ---------- Pie ---------- */
+    .pie {
+      margin-top: 24px;
+      padding-top: 14px;
+      border-top: 2px dotted rgba(107, 52, 16, 0.24);
+      text-align: center;
+      font-size: 0.8rem;
+      color: var(--tinta-suave);
+    }
+
+    .pie p { margin: 0; }
+
+    /* ---------- Accesibilidad ---------- */
+    .solo-lectores {
+      position: absolute;
+      width: 1px; height: 1px;
+      overflow: hidden;
+      clip: rect(0 0 0 0);
+      white-space: nowrap;
+    }
+
+    .salto-contenido { position: absolute; left: -9999px; }
+
+    .salto-contenido:focus {
+      left: 12px; top: 12px; z-index: 60;
+      padding: 10px 14px;
+      color: var(--vino);
+      background: var(--dorado);
+      border-radius: 10px;
+      font-weight: 800;
+      text-decoration: none;
+    }
+
+    :focus-visible { outline: 3px solid rgba(74, 16, 2, 0.4); outline-offset: 2px; }
+
+    @media (prefers-reduced-motion: reduce) {
+      * { transition: none !important; animation: none !important; scroll-behavior: auto !important; }
+    }
+
+    @media (min-width: 720px) {
+      .contenedor { max-width: 760px; padding-top: 26px; }
+      .opciones--dos { grid-template-columns: 1fr 1fr; }
+    }
+
+
+    .resumen-rol {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin: 0 0 14px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--tinta-suave);
+    }
+
+    .etiqueta-rol {
+      padding: 4px 10px;
+      font-size: 0.74rem;
+      font-weight: 900;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--vino);
+      background: var(--crema);
+      border: 1.5px solid rgba(243, 176, 32, 0.8);
+      border-radius: 999px;
+    }
+
+    /* ---------- Filtros ---------- */
+    .filtros {
+      display: flex;
+      gap: 8px;
+      margin: 0 0 16px;
+      padding-bottom: 4px;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+
+    .filtros::-webkit-scrollbar { display: none; }
+
+    .filtro {
+      flex: 0 0 auto;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      min-height: 44px;
+      padding: 10px 14px;
+      font: inherit;
+      font-size: 0.86rem;
+      font-weight: 800;
+      color: var(--vino);
+      background: #fff;
+      border: 2px solid rgba(107, 52, 16, 0.22);
+      border-radius: 999px;
+      cursor: pointer;
+      touch-action: manipulation;
+    }
+
+    .filtro[aria-pressed="true"] {
+      color: #fff;
+      background: linear-gradient(180deg, var(--vino), var(--cafe-oscuro));
+      border-color: var(--vino);
+    }
+
+    .filtro__cuenta {
+      min-width: 22px;
+      padding: 1px 6px;
+      font-size: 0.76rem;
+      font-weight: 900;
+      text-align: center;
+      color: var(--vino);
+      background: var(--dorado);
+      border-radius: 999px;
+    }
+
+    /* ---------- Pedidos ---------- */
+    .pedido {
+      margin: 0 0 14px;
+      padding: 14px;
+      background: #fff;
+      border: 2px solid rgba(107, 52, 16, 0.16);
+      border-left: 7px solid var(--dorado);
+      border-radius: 14px;
+      box-shadow: var(--sombra);
+    }
+
+    .pedido--recibido { border-left-color: var(--dorado); }
+    .pedido--en_preparacion { border-left-color: #e07b12; }
+    .pedido--en_ruta { border-left-color: var(--info); }
+    .pedido--entregado { border-left-color: var(--ok); opacity: 0.72; }
+
+    .pedido__cabeza {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 8px;
+    }
+
+    .pedido__numero {
+      font-size: 1rem;
+      font-weight: 900;
+      letter-spacing: 0.02em;
+      color: var(--vino);
+    }
+
+    .pedido__hora {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--tinta-suave);
+    }
+
+    .insignia {
+      margin-left: auto;
+      padding: 4px 10px;
+      font-size: 0.74rem;
+      font-weight: 900;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      border-radius: 999px;
+      white-space: nowrap;
+    }
+
+    .insignia--recibido { color: #6b4500; background: #fdecc9; border: 1.5px solid rgba(243, 176, 32, 0.9); }
+    .insignia--en_preparacion { color: #8a4b00; background: #ffe6cc; border: 1.5px solid #e8a15c; }
+    .insignia--en_ruta { color: #14406f; background: #dfeafa; border: 1.5px solid #8ab0e0; }
+    .insignia--entregado { color: #145c31; background: #dcf5e6; border: 1.5px solid #86cfa5; }
+
+    .pedido__dato {
+      display: flex;
+      gap: 6px;
+      margin: 0 0 4px;
+      font-size: 0.9rem;
+      line-height: 1.4;
+    }
+
+    .pedido__dato strong { flex: 0 0 auto; font-weight: 800; }
+
+    .pedido__direccion {
+      margin: 8px 0;
+      padding: 10px 12px;
+      font-size: 0.88rem;
+      line-height: 1.4;
+      background: #fffaf0;
+      border: 1.5px dashed rgba(243, 176, 32, 0.7);
+      border-radius: 11px;
+    }
+
+    .pedido__direccion p { margin: 0 0 3px; }
+    .pedido__direccion p:last-child { margin-bottom: 0; }
+
+    .pedido__items {
+      margin: 10px 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 4px;
+      font-size: 0.92rem;
+    }
+
+    .pedido__items li { display: flex; justify-content: space-between; gap: 10px; }
+
+    .pedido__items span:last-child {
+      flex: 0 0 auto;
+      font-weight: 800;
+      color: var(--vino);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .pedido__pie {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      padding-top: 10px;
+      border-top: 1px dashed rgba(107, 52, 16, 0.22);
+    }
+
+    .pedido__total {
+      font-size: 1.05rem;
+      font-weight: 900;
+      color: var(--vino);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .pedido__pago {
+      font-size: 0.8rem;
+      font-weight: 800;
+      color: var(--tinta-suave);
+      text-transform: capitalize;
+    }
+
+    .pedido__notas {
+      width: 100%;
+      margin: 8px 0 0;
+      padding: 9px 11px;
+      font-size: 0.86rem;
+      line-height: 1.4;
+      background: #fdf6e7;
+      border-radius: 10px;
+    }
+
+    .pedido__acciones {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      width: 100%;
+      margin-top: 10px;
+    }
+
+    .accion {
+      flex: 1 1 auto;
+      min-height: 48px;
+      min-width: 130px;
+      padding: 12px 14px;
+      font: inherit;
+      font-size: 0.88rem;
+      font-weight: 900;
+      color: #fff;
+      background: linear-gradient(180deg, var(--vino), var(--cafe-oscuro));
+      border: 0;
+      border-radius: 12px;
+      cursor: pointer;
+      touch-action: manipulation;
+      box-shadow: 0 2px 0 rgba(0, 0, 0, 0.3);
+    }
+
+    .accion:active { transform: translateY(2px); box-shadow: none; }
+    .accion:disabled { opacity: 0.55; box-shadow: none; cursor: wait; }
+
+    .accion--entregado {
+      background: linear-gradient(180deg, #2fbe63, #1f9d4f);
+      box-shadow: 0 2px 0 #157a3a;
+    }
+
+    .accion--ruta {
+      background: linear-gradient(180deg, #2f75cd, #1d5fb0);
+      box-shadow: 0 2px 0 #144a8a;
+    }
+
+    .vacio {
+      padding: 32px 18px;
+      text-align: center;
+      font-size: 0.94rem;
+      font-weight: 700;
+      color: var(--tinta-suave);
+      background: #fff;
+      border: 2px dashed rgba(107, 52, 16, 0.2);
+      border-radius: 14px;
+    }
+
+    .aviso-nuevo {
+      position: fixed;
+      left: 50%;
+      bottom: calc(20px + env(safe-area-inset-bottom));
+      transform: translateX(-50%);
+      z-index: 50;
+      max-width: 90vw;
+      padding: 12px 18px;
+      font-size: 0.9rem;
+      font-weight: 900;
+      color: #fff;
+      background: var(--vino);
+      border: 2px solid var(--dorado);
+      border-radius: 999px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+    }
+
+    .aviso-nuevo[hidden] { display: none; }
+
+  </style>
 </head>
 <body>
-  <a class="salto-contenido" href="#contenido">Ir al contenido</a>
-
   <header class="barra">
     <a class="barra__marca" href="index.html">
-      <img class="barra__icono" src="icono-192.png" alt="" width="38" height="38">
-      <span>
-        <span class="barra__titulo">Empleados</span>
+      <img class="barra__logo" src="icon-192.png" alt="Logotipo de El Torito ASADOS" width="40" height="40">
+      <span class="barra__texto">
+        <span class="barra__titulo">Pedidos del negocio</span>
         <span class="barra__sub">El Torito ASADOS</span>
       </span>
     </a>
-    <a class="barra__volver" href="index.html">Inicio</a>
+    <div class="barra__acciones">
+      <button class="barra__boton" id="botonSonido" type="button">🔔 Activar sonido</button>
+      <button class="barra__boton barra__boton--fantasma" id="botonSalir" type="button">Cerrar sesión</button>
+    </div>
   </header>
+  <main class="contenedor">
 
-  <main class="contenedor" id="contenido">
+    <p class="aviso aviso--error" id="avisoPagina" hidden></p>
 
-    <p class="estado" id="estadoConexion" hidden>
-      <span class="estado__punto" aria-hidden="true"></span>
-      <span id="estadoConexionTexto">Con conexión</span>
+    <div class="resumen-rol" id="resumenRol" hidden>
+      <span id="saludoPersonal"></span>
+      <span class="etiqueta-rol" id="etiquetaRol"></span>
+    </div>
+
+    <h1 class="titulo">Pedidos</h1>
+    <p class="parrafo" id="textoAyuda">
+      Aquí llegan los pedidos en tiempo real. Cambia el estado conforme avanza el trabajo.
     </p>
 
-    <section class="obras">
-      <p class="obras__emoji" aria-hidden="true">👨‍🍳</p>
-      <h1 class="obras__titulo">Empleados</h1>
-      <p class="obras__texto">
-        Esta pantalla se desarrolla en la siguiente etapa. Aquí se llevará el control
-        del personal que trabaja en El Torito.
-      </p>
-      <ul class="lista">
-        <li>Lista del personal con su puesto.</li>
-        <li>Turnos y días de trabajo.</li>
-        <li>Teléfonos y datos de contacto.</li>
-      </ul>
-      <a class="boton boton--fantasma" href="index.html">Volver al inicio</a>
-    </section>
+    <div class="filtros" id="filtros" role="group" aria-label="Filtrar por estado"></div>
+
+    <p class="aviso aviso--info" id="avisoSonido" hidden>
+      El aviso con sonido está apagado. Toca "Activar sonido" arriba para escuchar los pedidos nuevos.
+    </p>
+
+    <div id="lista"></div>
 
     <footer class="pie">
-      <p><strong>El Torito ASADOS</strong> · Sopas y asados</p>
-      <p>© <span id="anio">2026</span> · Funciona sin conexión</p>
+      <p>El Torito ASADOS · Sopas y asados · © 2026</p>
     </footer>
-
   </main>
 
-  <script src="app.js" defer></script>
+  <p class="aviso-nuevo" id="avisoNuevo" hidden role="status">🔔 Llegó un pedido nuevo</p>
+
+      <p class="aviso aviso--error" id="avisoCarga" hidden>
+        No se pudo cargar Firebase. Revisa que el celular tenga internet y vuelve a cargar la página.
+      </p>
+    <script>
+      /* Si en 7 segundos el módulo de Firebase no arrancó, mostramos el aviso.
+         Esto también sirve cuando el celular no tiene internet. */
+      setTimeout(function () {
+        if (!window.TORITO_LISTO) {
+          var aviso = document.getElementById('avisoCarga');
+          if (aviso) aviso.hidden = false;
+        }
+      }, 7000);
+    </script>
+  <script>
+    /* Registro del service worker (caché de la app). */
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function () {
+        navigator.serviceWorker.register('sw.js').catch(function (error) {
+          console.warn('[El Torito] No se pudo registrar el service worker:', error);
+        });
+      });
+    }
+  </script>
+  <script type="module">
+    import {
+      db, ROLES, NOMBRE_ROL, ESTADOS, etiquetaEstado, estadosPermitidosPara,
+      protegerPagina, salir, dinero, fechaHora, soloHora, mensajeDeError,
+      collection, query, orderBy, limit, onSnapshot, doc, updateDoc
+    } from './comun.js';
+
+    const lista = document.getElementById('lista');
+    const filtros = document.getElementById('filtros');
+    const avisoPagina = document.getElementById('avisoPagina');
+    const resumenRol = document.getElementById('resumenRol');
+    const saludoPersonal = document.getElementById('saludoPersonal');
+    const etiquetaRol = document.getElementById('etiquetaRol');
+    const avisoNuevo = document.getElementById('avisoNuevo');
+    const avisoSonido = document.getElementById('avisoSonido');
+
+    let sesion = null;
+    let pedidos = [];
+    let filtroActivo = 'activos';
+    let primeraCarga = true;
+    let idsConocidos = new Set();
+    let audioCtx = null;
+    let sonidoActivo = false;
+
+    /* ---------------- Sonido ---------------- */
+    function prepararAudio() {
+      try {
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        sonidoActivo = true;
+        avisoSonido.hidden = true;
+        document.getElementById('botonSonido').textContent = '🔔 Sonido activo';
+        pitar(1);
+      } catch (error) {
+        avisoSonido.hidden = false;
+      }
+    }
+
+    function pitar(veces) {
+      if (!audioCtx || !sonidoActivo) return;
+      const ahora = audioCtx.currentTime;
+      for (let i = 0; i < (veces || 2); i += 1) {
+        const osc = audioCtx.createOscillator();
+        const gan = audioCtx.createGain();
+        osc.type = 'sine';
+        osc.frequency.value = 880;
+        gan.gain.setValueAtTime(0.0001, ahora + i * 0.28);
+        gan.gain.exponentialRampToValueAtTime(0.35, ahora + i * 0.28 + 0.02);
+        gan.gain.exponentialRampToValueAtTime(0.0001, ahora + i * 0.28 + 0.22);
+        osc.connect(gan).connect(audioCtx.destination);
+        osc.start(ahora + i * 0.28);
+        osc.stop(ahora + i * 0.28 + 0.24);
+      }
+    }
+
+    /* ---------------- Arranque ---------------- */
+    async function iniciar() {
+      sesion = await protegerPagina([ROLES.EMPLEADO, ROLES.REPARTIDOR, ROLES.ADMINISTRADORA]);
+      if (!sesion) return;
+
+      const perfil = sesion.perfil;
+      saludoPersonal.textContent = 'Hola, ' + (perfil.nombre || sesion.usuario.email);
+      etiquetaRol.textContent = NOMBRE_ROL[perfil.rol] || perfil.rol;
+      resumenRol.hidden = false;
+
+      if (perfil.rol === ROLES.ADMINISTRADORA) {
+        document.getElementById('textoAyuda').textContent =
+          'Ves todos los pedidos y puedes cambiar cualquier estado.';
+      }
+
+      construirFiltros();
+      escucharPedidos();
+    }
+
+    /* ---------------- Filtros ---------------- */
+    const FILTROS = [
+      { id: 'activos', etiqueta: 'Activos' },
+      { id: 'recibido', etiqueta: 'Recibido' },
+      { id: 'en_preparacion', etiqueta: 'En preparación' },
+      { id: 'en_ruta', etiqueta: 'En ruta' },
+      { id: 'entregado', etiqueta: 'Entregado' }
+    ];
+
+    function construirFiltros() {
+      filtros.innerHTML = '';
+      FILTROS.forEach((filtro) => {
+        const boton = document.createElement('button');
+        boton.type = 'button';
+        boton.className = 'filtro';
+        boton.dataset.filtro = filtro.id;
+        boton.setAttribute('aria-pressed', String(filtro.id === filtroActivo));
+
+        const texto = document.createElement('span');
+        texto.textContent = filtro.etiqueta;
+
+        const cuenta = document.createElement('span');
+        cuenta.className = 'filtro__cuenta';
+        cuenta.id = 'cuenta-' + filtro.id;
+        cuenta.textContent = '0';
+
+        boton.appendChild(texto);
+        boton.appendChild(cuenta);
+
+        boton.addEventListener('click', () => {
+          filtroActivo = filtro.id;
+          document.querySelectorAll('.filtro').forEach((otro) => {
+            otro.setAttribute('aria-pressed', String(otro.dataset.filtro === filtroActivo));
+          });
+          pintar();
+        });
+
+        filtros.appendChild(boton);
+      });
+    }
+
+    function actualizarCuentas() {
+      const contar = (id) => pedidos.filter((pedido) => pedido.estado === id).length;
+      const activos = pedidos.filter((pedido) => pedido.estado !== 'entregado').length;
+
+      document.getElementById('cuenta-activos').textContent = String(activos);
+      ESTADOS.forEach((estado) => {
+        const elemento = document.getElementById('cuenta-' + estado.id);
+        if (elemento) elemento.textContent = String(contar(estado.id));
+      });
+
+      /* Título de la pestaña: pedidos recibidos sin atender */
+      const recibidos = contar('recibido');
+      document.title = (recibidos > 0 ? '(' + recibidos + ') ' : '') + 'Pedidos · El Torito ASADOS';
+    }
+
+    /* ---------------- Escuchar pedidos ---------------- */
+    function escucharPedidos() {
+      const consulta = query(collection(db, 'pedidos'), orderBy('creado', 'desc'), limit(200));
+
+      onSnapshot(consulta, (instantanea) => {
+        pedidos = instantanea.docs.map((documento) => {
+          const datos = documento.data() || {};
+          return {
+            id: documento.id,
+            numero: datos.numero || documento.id,
+            nombre: datos.nombre || '',
+            telefono: datos.telefono || '',
+            tipo: datos.tipo || '',
+            colonia: datos.colonia || '',
+            calle: datos.calle || '',
+            numeroCasa: datos.numeroCasa || '',
+            referencias: datos.referencias || '',
+            items: Array.isArray(datos.items) ? datos.items : [],
+            total: Number(datos.total) || 0,
+            pago: datos.pago || '',
+            notas: datos.notas || '',
+            estado: datos.estado || 'recibido',
+            creado: datos.creado || null
+          };
+        });
+
+        /* Pedidos nuevos (después de la primera carga) */
+        if (!primeraCarga) {
+          const nuevos = pedidos.filter((pedido) =>
+            pedido.estado === 'recibido' && !idsConocidos.has(pedido.id)
+          );
+          if (nuevos.length) {
+            pitar(2);
+            avisoNuevo.hidden = false;
+            setTimeout(() => { avisoNuevo.hidden = true; }, 4000);
+          }
+        }
+
+        idsConocidos = new Set(pedidos.map((pedido) => pedido.id));
+        primeraCarga = false;
+
+        actualizarCuentas();
+        pintar();
+      }, (error) => {
+        console.warn('[El Torito] Error al escuchar pedidos:', error);
+        avisoPagina.textContent = mensajeDeError(error);
+        avisoPagina.hidden = false;
+      });
+    }
+
+    /* ---------------- Pintar ---------------- */
+    function pedidosFiltrados() {
+      if (filtroActivo === 'activos') return pedidos.filter((pedido) => pedido.estado !== 'entregado');
+      return pedidos.filter((pedido) => pedido.estado === filtroActivo);
+    }
+
+    function pintar() {
+      const visibles = pedidosFiltrados();
+      lista.innerHTML = '';
+
+      if (!visibles.length) {
+        const vacio = document.createElement('div');
+        vacio.className = 'vacio';
+        vacio.textContent = filtroActivo === 'activos'
+          ? 'No hay pedidos pendientes en este momento.'
+          : 'No hay pedidos con este estado.';
+        lista.appendChild(vacio);
+        return;
+      }
+
+      visibles.forEach((pedido) => {
+        lista.appendChild(tarjetaDePedido(pedido));
+      });
+    }
+
+    function dato(etiqueta, valor) {
+      const parrafo = document.createElement('p');
+      parrafo.className = 'pedido__dato';
+
+      const titulo = document.createElement('strong');
+      titulo.textContent = etiqueta + ':';
+
+      const contenido = document.createElement('span');
+      contenido.textContent = valor;
+
+      parrafo.appendChild(titulo);
+      parrafo.appendChild(contenido);
+      return parrafo;
+    }
+
+    function tarjetaDePedido(pedido) {
+      const tarjeta = document.createElement('article');
+      tarjeta.className = 'pedido pedido--' + pedido.estado;
+
+      /* Cabecera */
+      const cabeza = document.createElement('div');
+      cabeza.className = 'pedido__cabeza';
+
+      const numero = document.createElement('span');
+      numero.className = 'pedido__numero';
+      numero.textContent = pedido.numero;
+
+      const hora = document.createElement('span');
+      hora.className = 'pedido__hora';
+      hora.textContent = soloHora(pedido.creado) + ' · ' + fechaHora(pedido.creado).split(',')[0];
+
+      const insignia = document.createElement('span');
+      insignia.className = 'insignia insignia--' + pedido.estado;
+      insignia.textContent = etiquetaEstado(pedido.estado);
+
+      cabeza.appendChild(numero);
+      cabeza.appendChild(hora);
+      cabeza.appendChild(insignia);
+
+      /* Datos del cliente */
+      const cliente = dato('Cliente', pedido.nombre);
+      const telefono = document.createElement('p');
+      telefono.className = 'pedido__dato';
+      const telefonoTitulo = document.createElement('strong');
+      telefonoTitulo.textContent = 'Teléfono:';
+      const enlace = document.createElement('a');
+      enlace.href = 'tel:' + pedido.telefono;
+      enlace.textContent = pedido.telefono;
+      enlace.style.fontWeight = '800';
+      telefono.appendChild(telefonoTitulo);
+      telefono.appendChild(enlace);
+
+      /* Entrega */
+      let entrega;
+      if (pedido.tipo === 'domicilio') {
+        entrega = document.createElement('div');
+        entrega.className = 'pedido__direccion';
+
+        const titulo = document.createElement('p');
+        titulo.innerHTML = '<strong>Entrega a domicilio</strong>';
+
+        const direccion = document.createElement('p');
+        direccion.textContent = [pedido.colonia, pedido.calle, pedido.numeroCasa]
+          .filter(Boolean).join(', ');
+
+        const referencia = document.createElement('p');
+        referencia.textContent = 'Referencias: ' + (pedido.referencias || '—');
+
+        entrega.appendChild(titulo);
+        entrega.appendChild(direccion);
+        entrega.appendChild(referencia);
+      } else {
+        entrega = dato('Entrega', 'El cliente pasa a traerlo al local');
+      }
+
+      /* Platillos */
+      const items = document.createElement('ul');
+      items.className = 'pedido__items';
+      pedido.items.forEach((item) => {
+        const fila = document.createElement('li');
+
+        const descripcion = document.createElement('span');
+        descripcion.textContent = (item.cantidad || 0) + ' × ' + (item.nombre || '');
+
+        const monto = document.createElement('span');
+        monto.textContent = dinero((Number(item.cantidad) || 0) * (Number(item.precio) || 0));
+
+        fila.appendChild(descripcion);
+        fila.appendChild(monto);
+        items.appendChild(fila);
+      });
+
+      /* Pie: total, pago y notas */
+      const pie = document.createElement('div');
+      pie.className = 'pedido__pie';
+
+      const total = document.createElement('span');
+      total.className = 'pedido__total';
+      total.textContent = 'Total: ' + dinero(pedido.total);
+
+      const pago = document.createElement('span');
+      pago.className = 'pedido__pago';
+      pago.textContent = 'Pago: ' + pedido.pago;
+
+      pie.appendChild(total);
+      pie.appendChild(pago);
+
+      let notas = null;
+      if (pedido.notas) {
+        notas = document.createElement('p');
+        notas.className = 'pedido__notas';
+        notas.textContent = 'Notas: ' + pedido.notas;
+      }
+
+      /* Acciones según el rol */
+      const acciones = document.createElement('div');
+      acciones.className = 'pedido__acciones';
+
+      const permitidos = estadosPermitidosPara(sesion.perfil.rol, pedido);
+      permitidos
+        .filter((estado) => estado !== pedido.estado)
+        .forEach((estado) => {
+          const boton = document.createElement('button');
+          boton.type = 'button';
+          boton.className = 'accion';
+          if (estado === 'entregado') boton.classList.add('accion--entregado');
+          if (estado === 'en_ruta') boton.classList.add('accion--ruta');
+          boton.textContent = 'Marcar ' + etiquetaEstado(estado).toLowerCase();
+
+          boton.addEventListener('click', async () => {
+            boton.disabled = true;
+            boton.textContent = 'Guardando…';
+            try {
+              await updateDoc(doc(db, 'pedidos', pedido.id), { estado: estado });
+            } catch (error) {
+              console.warn('[El Torito] No se pudo cambiar el estado:', error);
+              avisoPagina.textContent = mensajeDeError(error);
+              avisoPagina.hidden = false;
+              boton.disabled = false;
+              boton.textContent = 'Marcar ' + etiquetaEstado(estado).toLowerCase();
+            }
+          });
+
+          acciones.appendChild(boton);
+        });
+
+      if (acciones.childElementCount) pie.appendChild(acciones);
+
+      tarjeta.appendChild(cabeza);
+      tarjeta.appendChild(cliente);
+      tarjeta.appendChild(telefono);
+      tarjeta.appendChild(entrega);
+      tarjeta.appendChild(items);
+      tarjeta.appendChild(pie);
+      if (notas) tarjeta.appendChild(notas);
+
+      return tarjeta;
+    }
+
+    /* ---------------- Botones del encabezado ---------------- */
+    document.getElementById('botonSonido').addEventListener('click', prepararAudio);
+    document.getElementById('botonSalir').addEventListener('click', salir);
+
+    iniciar();
+  </script>
 </body>
 </html>

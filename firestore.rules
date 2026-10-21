@@ -1,0 +1,251 @@
+rules_version = '2';
+
+/* ===========================================================
+   El Torito ASADOS — Reglas de Cloud Firestore
+   -----------------------------------------------------------
+   Roles (confirmados por el negocio). Si cambian, se editan
+   AQUÍ y en firebase-config.js (constante ROLES):
+     · empleado       → ve pedidos; cambia estado a "en_preparacion"
+                        y a "entregado" (solo pedidos de recoger).
+     · repartidor     → ve pedidos; cambia estado a "en_ruta"
+                        y a "entregado".
+     · administradora → ve y edita todo; cambia cualquier estado.
+
+   Los usuarios NO se crean desde la app: se crean en la consola
+   de Firebase y su rol se escribe en usuarios/{uid}.
+   =========================================================== */
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    /* ---------------- Funciones de apoyo ---------------- */
+
+    function autenticado() {
+      return request.auth != null;
+    }
+
+    function refPerfil() {
+      return /databases/$(database)/documents/usuarios/$(request.auth.uid);
+    }
+
+    /* Primero exists(), después get(): así no falla cuando el
+       usuario no tiene documento o no hay sesión. */
+    function tienePerfil() {
+      return autenticado() && exists(refPerfil());
+    }
+
+    function rolActual() {
+      return tienePerfil() ? get(refPerfil()).data.rol : '';
+    }
+
+    function esAdministradora() {
+      return tienePerfil() && rolActual() == 'administradora';
+    }
+
+    function esEmpleado() {
+      return tienePerfil() && rolActual() == 'empleado';
+    }
+
+    function esRepartidor() {
+      return tienePerfil() && rolActual() == 'repartidor';
+    }
+
+    function esPersonal() {
+      return esAdministradora() || esEmpleado() || esRepartidor();
+    }
+
+    /* =========================================================
+       usuarios/{uid}  →  { rol, nombre }
+       Solo el propio usuario lee su documento. La administradora
+       lee todos. Nadie escribe desde la app.
+       ========================================================= */
+    match /usuarios/{uid} {
+      allow read: if autenticado() && (request.auth.uid == uid || esAdministradora());
+      allow write: if false;
+    }
+
+    /* =========================================================
+       menu/{id}  →  { nombre, precio, categoria, disponible }
+       Lectura pública (la necesita la página de pedidos).
+       Escritura solo de la administradora.
+       ========================================================= */
+    match /menu/{platilloId} {
+      allow read: if true;
+      allow write: if esAdministradora();
+    }
+
+    /* =========================================================
+       costos/{id}  →  { costo }
+       Mismo id que el platillo en menu.
+       SOLO la administradora: los costos nunca deben llegar a
+       empleados, repartidores ni al público.
+       ========================================================= */
+    match /costos/{platilloId} {
+      allow read, write: if esAdministradora();
+    }
+
+    /* =========================================================
+       pedidos/{id}
+       ========================================================= */
+    match /pedidos/{pedidoId} {
+
+      /* ----- Validación de un pedido nuevo ----- */
+
+      function esTexto(valor) {
+        return valor is string;
+      }
+
+      function estadoValido() {
+        return request.resource.data.estado == 'recibido';
+      }
+
+      function tipoValido() {
+        return request.resource.data.tipo in ['domicilio', 'recoger'];
+      }
+
+      function pagoValido() {
+        return request.resource.data.pago in ['efectivo', 'transferencia', 'tarjeta'];
+      }
+
+      function telefonoValido() {
+        return request.resource.data.telefono is string
+          && request.resource.data.telefono.matches('^[0-9]{8}$');
+      }
+
+      function nombreValido() {
+        return request.resource.data.nombre is string
+          && request.resource.data.nombre.size() >= 2
+          && request.resource.data.nombre.size() <= 80;
+      }
+
+      function itemsValidos() {
+        return request.resource.data.items is list
+          && request.resource.data.items.size() >= 1
+          && request.resource.data.items.size() <= 30;
+      }
+
+      function totalValido() {
+        return request.resource.data.total is number
+          && request.resource.data.total > 0
+          && request.resource.data.total < 10000;
+      }
+
+      function notasValidas() {
+        return request.resource.data.notas is string
+          && request.resource.data.notas.size() <= 300;
+      }
+
+      /* Si es a domicilio, la dirección no puede venir vacía. */
+      function direccionValida() {
+        return request.resource.data.tipo != 'domicilio' || (
+          request.resource.data.colonia is string
+          && request.resource.data.colonia.size() > 0
+          && request.resource.data.colonia.size() <= 120
+          && request.resource.data.calle is string
+          && request.resource.data.calle.size() > 0
+          && request.resource.data.calle.size() <= 120
+          && request.resource.data.numeroCasa is string
+          && request.resource.data.numeroCasa.size() > 0
+          && request.resource.data.numeroCasa.size() <= 120
+          && request.resource.data.referencias is string
+          && request.resource.data.referencias.size() > 0
+          && request.resource.data.referencias.size() <= 200
+        );
+      }
+
+      /* Claves exactas del pedido: ninguna otra es válida.
+         Nota: las reglas de Firestore no pueden recorrer listas,
+         así que de "items" se valida el tamaño (1 a 30) y la
+         estructura del primer elemento. El precio de cada platillo
+         tampoco se puede comparar con menu (ver limitaciones en
+         INSTRUCCIONES-FIREBASE.md). */
+      function clavesValidas() {
+        return request.resource.data.keys().hasOnly([
+          'numero', 'nombre', 'telefono', 'tipo',
+          'colonia', 'calle', 'numeroCasa', 'referencias',
+          'items', 'total', 'pago', 'notas', 'estado', 'creado'
+        ]) && request.resource.data.keys().hasAll([
+          'numero', 'nombre', 'telefono', 'tipo',
+          'colonia', 'calle', 'numeroCasa', 'referencias',
+          'items', 'total', 'pago', 'notas', 'estado', 'creado'
+        ]);
+      }
+
+      function primerItemValido() {
+        return request.resource.data.items[0] is map
+          && request.resource.data.items[0].keys().hasOnly(['nombre', 'cantidad', 'precio'])
+          && request.resource.data.items[0].nombre is string
+          && request.resource.data.items[0].nombre.size() >= 1
+          && request.resource.data.items[0].nombre.size() <= 80
+          && request.resource.data.items[0].cantidad is int
+          && request.resource.data.items[0].cantidad >= 1
+          && request.resource.data.items[0].cantidad <= 30
+          && request.resource.data.items[0].precio is number
+          && request.resource.data.items[0].precio >= 0
+          && request.resource.data.items[0].precio < 1000;
+      }
+
+      function numeroValido() {
+        return request.resource.data.numero is string
+          && request.resource.data.numero.matches('^PED-[0-9]{8}-[0-9]{4}$');
+      }
+
+      function pedidoValido() {
+        return clavesValidas()
+          && nombreValido()
+          && telefonoValido()
+          && tipoValido()
+          && pagoValido()
+          && itemsValidos()
+          && primerItemValido()
+          && totalValido()
+          && notasValidas()
+          && direccionValida()
+          && numeroValido()
+          && estadoValido()
+          && request.resource.data.creado == request.time;
+      }
+
+      /* ----- Estados que puede poner cada rol ----- */
+
+      function estadosDelRol() {
+        return esAdministradora()
+          ? ['recibido', 'en_preparacion', 'en_ruta', 'entregado']
+          : (esRepartidor()
+              ? ['en_ruta', 'entregado']
+              : (esEmpleado()
+                  /* El empleado solo marca "entregado" en pedidos de recoger */
+                  ? (resource.data.tipo == 'recoger'
+                      ? ['en_preparacion', 'entregado']
+                      : ['en_preparacion'])
+                  : []));
+      }
+
+      function soloCambiaEstado() {
+        return request.resource.data.diff(resource.data).affectedKeys().hasOnly(['estado']);
+      }
+
+      /* Un pedido ya entregado solo lo puede mover la administradora */
+      function pedidoAbierto() {
+        return resource.data.estado != 'entregado' || esAdministradora();
+      }
+
+      /* ----- Permisos ----- */
+
+      /* Cualquiera (sin iniciar sesión) puede crear un pedido válido */
+      allow create: if pedidoValido();
+
+      /* Solo el personal autenticado lee pedidos */
+      allow read: if esPersonal();
+
+      /* El personal solo cambia "estado", y solo a los valores de su rol */
+      allow update: if esPersonal()
+        && soloCambiaEstado()
+        && request.resource.data.estado in estadosDelRol()
+        && pedidoAbierto();
+
+      /* Nadie borra pedidos */
+      allow delete: if false;
+    }
+  }
+}

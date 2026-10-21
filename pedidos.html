@@ -3,64 +3,1251 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>Pedidos · El Torito ASADOS</title>
-  <meta name="description" content="Pedidos de El Torito ASADOS.">
+  <title>Haz tu pedido · El Torito ASADOS</title>
+  <meta name="description" content="Haz tu pedido de sopas y asados en El Torito ASADOS.">
+  <meta name="theme-color" content="#4A1002">
 
   <!-- PWA -->
   <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#4A1002">
-  <meta name="mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-title" content="El Torito">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <link rel="apple-touch-icon" href="icono-apple-180.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="icono-32.png">
+  <link rel="apple-touch-icon" href="icon-192.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 
-  <link rel="stylesheet" href="estilos.css">
+  <style>
+    /* ---------- Paleta y base ---------- */
+    :root {
+      --cafe: #3b1e08;
+      --cafe-oscuro: #2a1405;
+      --vino: #4a1002;
+      --dorado: #f3b020;
+      --dorado-claro: #ffd166;
+      --crema: #fae9cb;
+      --fondo: #fbf4e6;
+      --tinta: #2b1a0f;
+      --tinta-suave: #6d5443;
+      --ok: #1f9d4f;
+      --rojo: #b8220a;
+      --info: #1d5fb0;
+      --sombra: 0 6px 18px rgba(59, 30, 8, 0.14);
+      --radio: 16px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+
+    html { -webkit-text-size-adjust: 100%; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      min-height: 100dvh;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      font-size: 16px;
+      line-height: 1.45;
+      color: var(--tinta);
+      background-color: var(--fondo);
+      background-image:
+        radial-gradient(circle at 10% 0%, #fff8ea 0%, rgba(255, 248, 234, 0) 45%),
+        radial-gradient(circle at 90% 100%, #f6e3c2 0%, rgba(246, 227, 194, 0) 55%);
+      background-attachment: fixed;
+      -webkit-tap-highlight-color: transparent;
+      padding-bottom: env(safe-area-inset-bottom);
+    }
+
+    img { max-width: 100%; display: block; }
+
+    a { color: var(--vino); }
+
+    /* ---------- Encabezado ---------- */
+    .barra {
+      position: sticky;
+      top: 0;
+      z-index: 30;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: calc(10px + env(safe-area-inset-top)) 14px 10px;
+      background: linear-gradient(180deg, var(--vino) 0%, var(--cafe-oscuro) 100%);
+      color: #fff8ec;
+      box-shadow: 0 3px 14px rgba(0, 0, 0, 0.32);
+    }
+
+    .barra__marca {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .barra__logo {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 2px solid var(--dorado);
+      flex: 0 0 auto;
+    }
+
+    .barra__texto { min-width: 0; overflow: hidden; }
+
+    .barra__titulo {
+      display: block;
+      margin: 0;
+      font-size: 1.02rem;
+      font-weight: 900;
+      letter-spacing: 0.02em;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .barra__sub {
+      display: block;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--dorado-claro);
+    }
+
+    .barra__acciones {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex: 0 0 auto;
+    }
+
+    .barra__boton {
+      font: inherit;
+      font-size: 0.82rem;
+      font-weight: 800;
+      color: var(--vino);
+      background: var(--dorado);
+      border: 0;
+      border-radius: 999px;
+      padding: 9px 14px;
+      text-decoration: none;
+      cursor: pointer;
+      white-space: nowrap;
+      box-shadow: 0 2px 0 rgba(0, 0, 0, 0.25);
+      touch-action: manipulation;
+    }
+
+    .barra__boton:active { transform: translateY(2px); box-shadow: none; }
+
+    .barra__boton--fantasma {
+      background: transparent;
+      color: var(--crema);
+      border: 1.5px solid rgba(250, 233, 203, 0.55);
+      box-shadow: none;
+      font-weight: 700;
+    }
+
+    /* ---------- Contenedor ---------- */
+    .contenedor {
+      width: 100%;
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 18px 14px 40px;
+    }
+
+    /* ---------- Tipografía de sección ---------- */
+    .titulo {
+      margin: 0 0 6px;
+      font-size: clamp(1.35rem, 5vw, 1.7rem);
+      font-weight: 900;
+      line-height: 1.15;
+      color: var(--vino);
+    }
+
+    .parrafo {
+      margin: 0 0 16px;
+      font-size: 0.92rem;
+      color: var(--tinta-suave);
+    }
+
+    /* ---------- Tarjetas ---------- */
+    .tarjeta {
+      margin: 0 0 16px;
+      padding: 16px;
+      background: #fff;
+      border: 2px solid rgba(243, 176, 32, 0.42);
+      border-radius: var(--radio);
+      box-shadow: var(--sombra);
+    }
+
+    .tarjeta__titulo {
+      margin: 0 0 12px;
+      font-size: 1rem;
+      font-weight: 900;
+      color: var(--vino);
+    }
+
+    /* ---------- Formularios ---------- */
+    .campo { display: block; margin: 0 0 14px; }
+
+    .campo__label {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 0.9rem;
+      font-weight: 800;
+    }
+
+    .campo__req { color: var(--rojo); }
+    .campo__opcional { font-size: 0.8rem; font-weight: 600; color: var(--tinta-suave); }
+
+    .campo__control {
+      display: block;
+      width: 100%;
+      min-height: 50px;
+      padding: 12px 14px;
+      font: inherit;
+      font-size: 16px;
+      color: var(--tinta);
+      background: #fffdf8;
+      border: 2px solid rgba(107, 52, 16, 0.26);
+      border-radius: 13px;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .campo__control::placeholder { color: #a08b78; }
+
+    .campo__control:focus {
+      outline: none;
+      background: #fff;
+      border-color: var(--dorado);
+      box-shadow: 0 0 0 4px rgba(243, 176, 32, 0.24);
+    }
+
+    textarea.campo__control { min-height: 88px; resize: vertical; }
+
+    .campo--error .campo__control {
+      border-color: var(--rojo);
+      background: #fff6f3;
+      box-shadow: 0 0 0 3px rgba(184, 34, 10, 0.13);
+    }
+
+    .campo__error {
+      margin: 6px 0 0;
+      font-size: 0.84rem;
+      font-weight: 700;
+      color: var(--rojo);
+    }
+
+    .campo__error::before { content: "⚠ "; }
+    .campo__error[hidden] { display: none; }
+
+    /* ---------- Opciones tipo tarjeta ---------- */
+    .opciones { display: grid; gap: 10px; margin: 0 0 14px; }
+
+    .opcion {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-height: 56px;
+      padding: 13px;
+      font-size: 1rem;
+      font-weight: 700;
+      background: #fffdf8;
+      border: 2px solid rgba(107, 52, 16, 0.22);
+      border-radius: 13px;
+      cursor: pointer;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+    }
+
+    .opcion input[type="radio"] {
+      appearance: none;
+      -webkit-appearance: none;
+      flex: 0 0 auto;
+      width: 24px;
+      height: 24px;
+      margin: 0;
+      display: grid;
+      place-content: center;
+      background: #fff;
+      border: 2px solid rgba(107, 52, 16, 0.45);
+      border-radius: 50%;
+    }
+
+    .opcion input[type="radio"]::before {
+      content: "";
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--vino);
+      transform: scale(0);
+      transition: transform 0.12s ease;
+    }
+
+    .opcion input[type="radio"]:checked::before { transform: scale(1); }
+
+    .opcion:has(input:checked) {
+      background: #fffdf3;
+      border-color: var(--dorado);
+      box-shadow: 0 0 0 3px rgba(243, 176, 32, 0.22);
+    }
+
+    .opcion:has(input:focus-visible) {
+      outline: 3px solid rgba(74, 16, 2, 0.35);
+      outline-offset: 2px;
+    }
+
+    /* ---------- Botones ---------- */
+    .boton {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      width: 100%;
+      min-height: 56px;
+      padding: 15px 20px;
+      font: inherit;
+      font-size: 1rem;
+      font-weight: 900;
+      color: var(--vino);
+      text-decoration: none;
+      background: linear-gradient(180deg, var(--dorado-claro), var(--dorado));
+      border: 0;
+      border-radius: 999px;
+      box-shadow: 0 4px 0 #b98111, var(--sombra);
+      cursor: pointer;
+      touch-action: manipulation;
+    }
+
+    .boton:active { transform: translateY(3px); box-shadow: 0 1px 0 #b98111; }
+
+    .boton:disabled {
+      opacity: 0.6;
+      box-shadow: none;
+      cursor: not-allowed;
+    }
+
+    .boton--secundario {
+      color: var(--vino);
+      background: #fff;
+      border: 2px solid rgba(74, 16, 2, 0.3);
+      box-shadow: none;
+      font-weight: 800;
+    }
+
+    .boton--chico {
+      width: auto;
+      min-height: 44px;
+      padding: 10px 16px;
+      font-size: 0.88rem;
+      box-shadow: 0 2px 0 #b98111;
+    }
+
+    .boton--verde {
+      color: #fff;
+      background: linear-gradient(180deg, #2fbe63, #1f9d4f);
+      box-shadow: 0 3px 0 #157a3a;
+    }
+
+    .boton--verde:active { box-shadow: none; }
+
+    /* ---------- Avisos ---------- */
+    .aviso {
+      margin: 0 0 14px;
+      padding: 12px 14px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      line-height: 1.4;
+      border-radius: 13px;
+      border: 2px solid;
+    }
+
+    .aviso--info { color: #6b4500; background: #fdecc9; border-color: rgba(243, 176, 32, 0.8); }
+    .aviso--error { color: #8c1d05; background: #ffe1da; border-color: #e79a86; }
+    .aviso--ok { color: #145c31; background: #dcf5e6; border-color: #86cfa5; }
+    .aviso[hidden] { display: none; }
+
+    /* ---------- Pie ---------- */
+    .pie {
+      margin-top: 24px;
+      padding-top: 14px;
+      border-top: 2px dotted rgba(107, 52, 16, 0.24);
+      text-align: center;
+      font-size: 0.8rem;
+      color: var(--tinta-suave);
+    }
+
+    .pie p { margin: 0; }
+
+    /* ---------- Accesibilidad ---------- */
+    .solo-lectores {
+      position: absolute;
+      width: 1px; height: 1px;
+      overflow: hidden;
+      clip: rect(0 0 0 0);
+      white-space: nowrap;
+    }
+
+    .salto-contenido { position: absolute; left: -9999px; }
+
+    .salto-contenido:focus {
+      left: 12px; top: 12px; z-index: 60;
+      padding: 10px 14px;
+      color: var(--vino);
+      background: var(--dorado);
+      border-radius: 10px;
+      font-weight: 800;
+      text-decoration: none;
+    }
+
+    :focus-visible { outline: 3px solid rgba(74, 16, 2, 0.4); outline-offset: 2px; }
+
+    @media (prefers-reduced-motion: reduce) {
+      * { transition: none !important; animation: none !important; scroll-behavior: auto !important; }
+    }
+
+    @media (min-width: 720px) {
+      .contenedor { max-width: 760px; padding-top: 26px; }
+      .opciones--dos { grid-template-columns: 1fr 1fr; }
+    }
+
+
+    .bloque { scroll-margin-top: 90px; }
+
+    .seccion {
+      margin: 0 0 16px;
+      padding: 16px;
+      background: #fff;
+      border: 2px solid rgba(243, 176, 32, 0.42);
+      border-radius: var(--radio);
+      box-shadow: var(--sombra);
+    }
+
+    .seccion__titulo {
+      margin: 0 0 12px;
+      font-size: 1rem;
+      font-weight: 900;
+      color: var(--vino);
+    }
+
+    .seccion__ayuda {
+      margin: -6px 0 12px;
+      font-size: 0.84rem;
+      color: var(--tinta-suave);
+    }
+
+    /* ---------- Menú ---------- */
+    .categoria {
+      margin: 16px 0 4px;
+      font-size: 0.76rem;
+      font-weight: 900;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--vino);
+    }
+
+    .categoria:first-child { margin-top: 0; }
+
+    .platillo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 0;
+      border-bottom: 1px dashed rgba(107, 52, 16, 0.2);
+    }
+
+    .platillo:last-child { border-bottom: 0; }
+
+    .platillo__info { flex: 1 1 auto; min-width: 0; }
+
+    .platillo__nombre {
+      display: block;
+      margin: 0 0 2px;
+      font-size: 0.98rem;
+      font-weight: 800;
+      line-height: 1.25;
+    }
+
+    .platillo__precio {
+      display: block;
+      font-size: 0.88rem;
+      font-weight: 800;
+      color: var(--vino);
+    }
+
+    .cantidad {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      flex: 0 0 auto;
+    }
+
+    .cantidad__boton {
+      width: 48px;
+      height: 48px;
+      display: grid;
+      place-items: center;
+      padding: 0;
+      font: inherit;
+      font-size: 1.4rem;
+      font-weight: 900;
+      line-height: 1;
+      color: var(--vino);
+      background: linear-gradient(180deg, var(--dorado-claro), var(--dorado));
+      border: 0;
+      border-radius: 13px;
+      box-shadow: 0 2px 0 #b98111;
+      cursor: pointer;
+      touch-action: manipulation;
+    }
+
+    .cantidad__boton:active { transform: translateY(2px); box-shadow: none; }
+
+    .cantidad__boton:disabled { opacity: 0.4; box-shadow: none; cursor: not-allowed; }
+
+    .cantidad__valor {
+      min-width: 32px;
+      text-align: center;
+      font-size: 1.1rem;
+      font-weight: 900;
+      color: var(--vino);
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* ---------- Resumen ---------- */
+    .resumen { list-style: none; margin: 0 0 12px; padding: 0; display: grid; gap: 8px; }
+
+    .resumen__linea {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      font-size: 0.92rem;
+      line-height: 1.35;
+    }
+
+    .resumen__linea span:last-child {
+      flex: 0 0 auto;
+      font-weight: 800;
+      color: var(--vino);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .resumen__vacio { margin: 0 0 12px; font-size: 0.9rem; font-weight: 600; color: var(--tinta-suave); }
+
+    .total {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 12px;
+      padding-top: 12px;
+      border-top: 2px solid rgba(243, 176, 32, 0.55);
+      font-size: 1rem;
+      font-weight: 900;
+      color: var(--vino);
+    }
+
+    .total strong { font-size: 1.45rem; font-variant-numeric: tabular-nums; }
+
+    /* ---------- Confirmación ---------- */
+    .confirmacion { text-align: center; padding: 10px 0; }
+
+    .confirmacion__icono {
+      width: 84px;
+      height: 84px;
+      margin: 0 auto 14px;
+      display: grid;
+      place-items: center;
+      font-size: 2.3rem;
+      background: #dcf5e6;
+      border: 3px solid #86cfa5;
+      border-radius: 50%;
+    }
+
+    .confirmacion__numero {
+      display: block;
+      margin: 6px auto 14px;
+      padding: 12px 16px;
+      font-size: 1.3rem;
+      font-weight: 900;
+      letter-spacing: 0.04em;
+      color: var(--vino);
+      background: var(--crema);
+      border: 2px dashed var(--dorado);
+      border-radius: 14px;
+      word-break: break-word;
+    }
+
+    .confirmacion__datos {
+      margin: 0 0 18px;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 6px;
+      text-align: left;
+      font-size: 0.92rem;
+    }
+
+    .confirmacion__datos li { display: flex; justify-content: space-between; gap: 10px; }
+
+    .confirmacion__datos span:last-child { font-weight: 800; text-align: right; }
+
+    /* ---------- Cargando menú ---------- */
+    .esqueleto {
+      height: 56px;
+      margin-bottom: 10px;
+      border-radius: 12px;
+      background: linear-gradient(90deg, #f3e7d2, #fbf3e4, #f3e7d2);
+      background-size: 200% 100%;
+      animation: brillo 1.4s linear infinite;
+    }
+
+    @keyframes brillo { to { background-position: -200% 0; } }
+
+    .contador-notas {
+      margin: 4px 0 0;
+      text-align: right;
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--tinta-suave);
+    }
+
+  </style>
 </head>
 <body>
-  <a class="salto-contenido" href="#contenido">Ir al contenido</a>
-
   <header class="barra">
     <a class="barra__marca" href="index.html">
-      <img class="barra__icono" src="icono-192.png" alt="" width="38" height="38">
-      <span>
-        <span class="barra__titulo">Pedidos</span>
+      <img class="barra__logo" src="icon-192.png" alt="Logotipo de El Torito ASADOS" width="40" height="40">
+      <span class="barra__texto">
+        <span class="barra__titulo">Haz tu pedido</span>
         <span class="barra__sub">El Torito ASADOS</span>
       </span>
     </a>
-    <a class="barra__volver" href="index.html">Inicio</a>
   </header>
+  <main class="contenedor">
 
-  <main class="contenedor" id="contenido">
-
-    <p class="estado" id="estadoConexion" hidden>
-      <span class="estado__punto" aria-hidden="true"></span>
-      <span id="estadoConexionTexto">Con conexión</span>
+    <h1 class="titulo">Haz tu pedido</h1>
+    <p class="parrafo">
+      Llena tus datos, elige tus platillos y envía el pedido. Te confirmamos por teléfono.
     </p>
 
-    <section class="obras">
-      <p class="obras__emoji" aria-hidden="true">🍲</p>
-      <h1 class="obras__titulo">Pedidos</h1>
-      <p class="obras__texto">
-        Esta pantalla se desarrolla en la siguiente etapa. Aquí se tomarán los pedidos
-        de sopas y asados, con su mesa, cantidad y total.
+    <p class="aviso aviso--error" id="avisoGeneral" hidden></p>
+
+    <p class="aviso aviso--info" id="avisoSinConexion" hidden>
+      No hay conexión a internet. Para enviar un pedido necesitas estar conectado
+      y volver a cargar la página. No guardamos tus datos en este celular.
+    </p>
+
+    <p class="aviso aviso--info" id="avisoConfig" hidden>
+      Falta pegar la configuración de Firebase en firebase-config.js.
+      Avisa a quien mantiene la app.
+    </p>
+
+    <!-- ============ Formulario ============ -->
+    <form id="formPedido" novalidate autocomplete="off">
+
+      <section class="seccion bloque" id="bloque-datos">
+        <h2 class="seccion__titulo">Tus datos</h2>
+
+        <div class="campo" id="campo-nombre">
+          <label class="campo__label" for="nombre">Nombre completo <span class="campo__req">*</span></label>
+          <input class="campo__control" id="nombre" name="nombre" type="text" maxlength="80"
+                 autocomplete="name" placeholder="Ejemplo: María López">
+          <p class="campo__error" id="error-nombre" role="alert" hidden></p>
+        </div>
+
+        <div class="campo" id="campo-telefono">
+          <label class="campo__label" for="telefono">Teléfono <span class="campo__req">*</span></label>
+          <input class="campo__control" id="telefono" name="telefono" type="tel"
+                 inputmode="numeric" maxlength="8" autocomplete="tel"
+                 placeholder="8 dígitos, ejemplo: 71234567">
+          <p class="campo__error" id="error-telefono" role="alert" hidden></p>
+        </div>
+      </section>
+
+      <section class="seccion bloque" id="bloque-tipo">
+        <h2 class="seccion__titulo">¿Cómo lo quieres? <span class="campo__req">*</span></h2>
+
+        <div class="opciones opciones--dos" id="grupo-tipo">
+          <label class="opcion">
+            <input type="radio" name="tipo" value="domicilio" id="tipo-domicilio">
+            <span>Entrega a domicilio</span>
+          </label>
+          <label class="opcion">
+            <input type="radio" name="tipo" value="recoger" id="tipo-recoger">
+            <span>Recoger en el local</span>
+          </label>
+        </div>
+        <p class="campo__error" id="error-tipo" role="alert" hidden></p>
+
+        <div id="camposDomicilio" hidden>
+          <div class="campo" id="campo-colonia">
+            <label class="campo__label" for="colonia">Colonia <span class="campo__req">*</span></label>
+            <input class="campo__control" id="colonia" type="text" maxlength="120"
+                   placeholder="Ejemplo: Colonia San Carlos">
+            <p class="campo__error" id="error-colonia" role="alert" hidden></p>
+          </div>
+
+          <div class="campo" id="campo-calle">
+            <label class="campo__label" for="calle">Calle <span class="campo__req">*</span></label>
+            <input class="campo__control" id="calle" type="text" maxlength="120"
+                   placeholder="Ejemplo: Calle Principal">
+            <p class="campo__error" id="error-calle" role="alert" hidden></p>
+          </div>
+
+          <div class="campo" id="campo-numeroCasa">
+            <label class="campo__label" for="numeroCasa">Número de casa o portón <span class="campo__req">*</span></label>
+            <input class="campo__control" id="numeroCasa" type="text" maxlength="120"
+                   placeholder="Ejemplo: Casa 12, portón verde">
+            <p class="campo__error" id="error-numeroCasa" role="alert" hidden></p>
+          </div>
+
+          <div class="campo" id="campo-referencias">
+            <label class="campo__label" for="referencias">Puntos de referencia <span class="campo__req">*</span></label>
+            <textarea class="campo__control" id="referencias" rows="3" maxlength="200"
+                      placeholder="Ejemplo: frente a la tienda La Bendición"></textarea>
+            <p class="campo__error" id="error-referencias" role="alert" hidden></p>
+          </div>
+        </div>
+      </section>
+
+      <section class="seccion bloque" id="bloque-menu">
+        <h2 class="seccion__titulo">Tu pedido</h2>
+        <p class="seccion__ayuda">Toca + para agregar y − para quitar.</p>
+
+        <div id="listaMenu">
+          <div class="esqueleto"></div>
+          <div class="esqueleto"></div>
+          <div class="esqueleto"></div>
+        </div>
+
+        <p class="campo__error" id="error-items" role="alert" hidden></p>
+      </section>
+
+      <section class="seccion" id="bloque-resumen">
+        <h2 class="seccion__titulo">Resumen</h2>
+        <ul class="resumen" id="resumenLista"></ul>
+        <p class="resumen__vacio" id="resumenVacio">Todavía no has agregado platillos.</p>
+        <div class="total">
+          <span>Total</span>
+          <strong id="resumenTotal" aria-live="polite">$0.00</strong>
+        </div>
+      </section>
+
+      <section class="seccion bloque" id="bloque-pago">
+        <h2 class="seccion__titulo">Forma de pago <span class="campo__req">*</span></h2>
+
+        <div class="opciones opciones--dos" id="grupo-pago">
+          <label class="opcion">
+            <input type="radio" name="pago" value="efectivo" id="pago-efectivo">
+            <span>Efectivo</span>
+          </label>
+          <label class="opcion">
+            <input type="radio" name="pago" value="transferencia" id="pago-transferencia">
+            <span>Transferencia</span>
+          </label>
+          <label class="opcion">
+            <input type="radio" name="pago" value="tarjeta" id="pago-tarjeta">
+            <span>Tarjeta</span>
+          </label>
+        </div>
+        <p class="campo__error" id="error-pago" role="alert" hidden></p>
+
+        <div class="campo">
+          <label class="campo__label" for="notas">Notas adicionales <span class="campo__opcional">(opcional)</span></label>
+          <textarea class="campo__control" id="notas" rows="3" maxlength="300"
+                    placeholder="Ejemplo: sin cebolla, extra tortillas"></textarea>
+          <p class="contador-notas"><span id="contadorNotas">0</span>/300</p>
+        </div>
+      </section>
+
+      <button class="boton" id="botonEnviar" type="submit">Enviar pedido</button>
+      <p class="seccion__ayuda" style="text-align:center;margin:10px 0 0">
+        Revisa bien tu pedido antes de enviarlo.
       </p>
-      <ul class="lista">
-        <li>Captura rápida del pedido por mesa o para llevar.</li>
-        <li>Catálogo de sopas y asados con precios.</li>
-        <li>Resumen del día y total a cobrar.</li>
+    </form>
+
+    <!-- ============ Confirmación ============ -->
+    <section class="seccion confirmacion" id="confirmacion" hidden>
+      <div class="confirmacion__icono" aria-hidden="true">✓</div>
+      <h2 class="seccion__titulo">¡Recibimos tu pedido!</h2>
+      <p class="parrafo" style="margin-bottom:4px">Guarda este número:</p>
+      <span class="confirmacion__numero" id="numeroPedido">—</span>
+
+      <ul class="confirmacion__datos">
+        <li><span>Total</span><span id="confirmacionTotal">—</span></li>
+        <li><span>Entrega</span><span id="confirmacionTipo">—</span></li>
+        <li><span>Pago</span><span id="confirmacionPago">—</span></li>
       </ul>
-      <a class="boton boton--fantasma" href="index.html">Volver al inicio</a>
+
+      <p class="parrafo">
+        Te vamos a llamar al número que nos diste para confirmar el pedido.
+        Si necesitas cambiar algo, llama al negocio y menciona tu número de pedido.
+      </p>
+
+      <a class="boton" href="index.html">Volver al inicio</a>
+      <button class="boton boton--secundario boton--chico" id="botonOtro" type="button"
+              style="margin-top:10px">Hacer otro pedido</button>
     </section>
 
     <footer class="pie">
-      <p><strong>El Torito ASADOS</strong> · Sopas y asados</p>
-      <p>© <span id="anio">2026</span> · Funciona sin conexión</p>
+      <p>El Torito ASADOS · Sopas y asados · © 2026</p>
     </footer>
-
   </main>
 
-  <script src="app.js" defer></script>
+      <p class="aviso aviso--error" id="avisoCarga" hidden>
+        No se pudo cargar Firebase. Revisa que el celular tenga internet y vuelve a cargar la página.
+      </p>
+    <script>
+      /* Si en 7 segundos el módulo de Firebase no arrancó, mostramos el aviso.
+         Esto también sirve cuando el celular no tiene internet. */
+      setTimeout(function () {
+        if (!window.TORITO_LISTO) {
+          var aviso = document.getElementById('avisoCarga');
+          if (aviso) aviso.hidden = false;
+        }
+      }, 7000);
+    </script>
+  <script>
+    /* Registro del service worker (caché de la app). */
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function () {
+        navigator.serviceWorker.register('sw.js').catch(function (error) {
+          console.warn('[El Torito] No se pudo registrar el service worker:', error);
+        });
+      });
+    }
+  </script>
+  <script type="module">
+    import {
+      db, CONFIG_PENDIENTE, collection, query, where, getDocs, addDoc,
+      serverTimestamp, dinero, numeroDePedido
+    } from './comun.js';
+
+    /* ---------------- Referencias ---------------- */
+    const formulario = document.getElementById('formPedido');
+    const listaMenu = document.getElementById('listaMenu');
+    const resumenLista = document.getElementById('resumenLista');
+    const resumenVacio = document.getElementById('resumenVacio');
+    const resumenTotal = document.getElementById('resumenTotal');
+    const confirmacion = document.getElementById('confirmacion');
+    const botonEnviar = document.getElementById('botonEnviar');
+    const avisoGeneral = document.getElementById('avisoGeneral');
+    const avisoSinConexion = document.getElementById('avisoSinConexion');
+    const avisoConfig = document.getElementById('avisoConfig');
+    const camposDomicilio = document.getElementById('camposDomicilio');
+    const contadorNotas = document.getElementById('contadorNotas');
+
+    const ETIQUETAS_CATEGORIA = { sopas: 'Sopas', asados: 'Asados' };
+    const ETIQUETAS_TIPO = { domicilio: 'Entrega a domicilio', recoger: 'Recoger en el local' };
+    const ETIQUETAS_PAGO = { efectivo: 'Efectivo', transferencia: 'Transferencia', tarjeta: 'Tarjeta' };
+
+    let menu = [];
+    const cantidades = {};
+    let enviando = false;
+
+    /* ---------------- Avisos ---------------- */
+    function avisar(mensaje, tipo) {
+      avisoGeneral.textContent = mensaje || '';
+      avisoGeneral.className = 'aviso aviso--' + (tipo || 'error');
+      avisoGeneral.hidden = !mensaje;
+    }
+
+    /* ---------------- Conexión ---------------- */
+    function revisarConexion() {
+      const enLinea = navigator.onLine;
+      avisoSinConexion.hidden = enLinea;
+      if (!enLinea) avisar('');
+    }
+
+    window.addEventListener('online', revisarConexion);
+    window.addEventListener('offline', revisarConexion);
+    revisarConexion();
+
+    if (CONFIG_PENDIENTE) avisoConfig.hidden = false;
+
+    /* ---------------- Cargar menú desde Firestore ---------------- */
+    async function cargarMenu() {
+      if (!navigator.onLine) {
+        listaMenu.innerHTML = '';
+        avisar('No hay conexión a internet, así que no pudimos cargar el menú. Conéctate y vuelve a cargar la página.', 'info');
+        return;
+      }
+
+      try {
+        const consulta = query(collection(db, 'menu'), where('disponible', '==', true));
+        const instantanea = await getDocs(consulta);
+
+        menu = instantanea.docs
+          .map((documento) => {
+            const datos = documento.data() || {};
+            return {
+              id: documento.id,
+              nombre: String(datos.nombre || ''),
+              precio: Number(datos.precio) || 0,
+              categoria: datos.categoria === 'sopas' ? 'sopas' : 'asados'
+            };
+          })
+          .filter((platillo) => platillo.nombre)
+          .sort((a, b) => a.nombre.localeCompare(b.nombre, 'es'));
+
+        menu.forEach((platillo) => { cantidades[platillo.id] = 0; });
+        pintarMenu();
+        actualizarResumen();
+      } catch (error) {
+        console.warn('[El Torito] Error al cargar el menú:', error);
+        listaMenu.innerHTML = '';
+        avisar('No pudimos cargar el menú. Revisa tu conexión y vuelve a cargar la página.', 'error');
+      }
+    }
+
+    function pintarMenu() {
+      listaMenu.innerHTML = '';
+
+      if (!menu.length) {
+        const texto = document.createElement('p');
+        texto.className = 'resumen__vacio';
+        texto.textContent = 'El menú todavía no está cargado. Llama al negocio para hacer tu pedido.';
+        listaMenu.appendChild(texto);
+        return;
+      }
+
+      ['sopas', 'asados'].forEach((categoria) => {
+        const platillos = menu.filter((platillo) => platillo.categoria === categoria);
+        if (!platillos.length) return;
+
+        const titulo = document.createElement('p');
+        titulo.className = 'categoria';
+        titulo.textContent = ETIQUETAS_CATEGORIA[categoria];
+        listaMenu.appendChild(titulo);
+
+        platillos.forEach((platillo) => {
+          const fila = document.createElement('div');
+          fila.className = 'platillo';
+
+          const info = document.createElement('div');
+          info.className = 'platillo__info';
+
+          const nombre = document.createElement('span');
+          nombre.className = 'platillo__nombre';
+          nombre.textContent = platillo.nombre;
+
+          const precio = document.createElement('span');
+          precio.className = 'platillo__precio';
+          precio.textContent = dinero(platillo.precio);
+
+          info.appendChild(nombre);
+          info.appendChild(precio);
+
+          const cantidad = document.createElement('div');
+          cantidad.className = 'cantidad';
+
+          const menos = document.createElement('button');
+          menos.type = 'button';
+          menos.className = 'cantidad__boton';
+          menos.dataset.accion = 'menos';
+          menos.dataset.id = platillo.id;
+          menos.textContent = '−';
+          menos.disabled = true;
+          menos.setAttribute('aria-label', 'Quitar uno de ' + platillo.nombre);
+
+          const valor = document.createElement('span');
+          valor.className = 'cantidad__valor';
+          valor.id = 'cantidad-' + platillo.id;
+          valor.textContent = '0';
+          valor.setAttribute('aria-live', 'polite');
+
+          const mas = document.createElement('button');
+          mas.type = 'button';
+          mas.className = 'cantidad__boton';
+          mas.dataset.accion = 'mas';
+          mas.dataset.id = platillo.id;
+          mas.textContent = '+';
+          mas.setAttribute('aria-label', 'Agregar uno de ' + platillo.nombre);
+
+          cantidad.appendChild(menos);
+          cantidad.appendChild(valor);
+          cantidad.appendChild(mas);
+
+          fila.appendChild(info);
+          fila.appendChild(cantidad);
+          listaMenu.appendChild(fila);
+        });
+      });
+    }
+
+    /* ---------------- Cantidades y resumen ---------------- */
+    listaMenu.addEventListener('click', (evento) => {
+      const boton = evento.target.closest('.cantidad__boton');
+      if (!boton) return;
+
+      const id = boton.dataset.id;
+      const actual = cantidades[id] || 0;
+
+      if (boton.dataset.accion === 'mas' && actual < 20) cantidades[id] = actual + 1;
+      if (boton.dataset.accion === 'menos' && actual > 0) cantidades[id] = actual - 1;
+
+      actualizarResumen();
+      ocultarError('items');
+    });
+
+    function calcularTotal() {
+      return menu.reduce((suma, platillo) => suma + (cantidades[platillo.id] || 0) * platillo.precio, 0);
+    }
+
+    function actualizarResumen() {
+      resumenLista.innerHTML = '';
+      let hay = false;
+
+      menu.forEach((platillo) => {
+        const cantidad = cantidades[platillo.id] || 0;
+        if (!cantidad) return;
+        hay = true;
+
+        const linea = document.createElement('li');
+        linea.className = 'resumen__linea';
+
+        const descripcion = document.createElement('span');
+        descripcion.textContent = cantidad + ' × ' + platillo.nombre;
+
+        const monto = document.createElement('span');
+        monto.textContent = dinero(cantidad * platillo.precio);
+
+        linea.appendChild(descripcion);
+        linea.appendChild(monto);
+        resumenLista.appendChild(linea);
+      });
+
+      resumenVacio.hidden = hay;
+      resumenTotal.textContent = dinero(calcularTotal());
+
+      menu.forEach((platillo) => {
+        const valor = document.getElementById('cantidad-' + platillo.id);
+        const menos = listaMenu.querySelector('.cantidad__boton[data-accion="menos"][data-id="' + platillo.id + '"]');
+        if (valor) valor.textContent = String(cantidades[platillo.id] || 0);
+        if (menos) menos.disabled = !cantidades[platillo.id];
+      });
+    }
+
+    /* ---------------- Tipo de pedido ---------------- */
+    function tipoElegido() {
+      const radio = document.querySelector('input[name="tipo"]:checked');
+      return radio ? radio.value : '';
+    }
+
+    function actualizarDomicilio() {
+      const esDomicilio = tipoElegido() === 'domicilio';
+      camposDomicilio.hidden = !esDomicilio;
+      ['colonia', 'calle', 'numeroCasa', 'referencias'].forEach((campo) => {
+        document.getElementById(campo).required = esDomicilio;
+        if (!esDomicilio) ocultarError(campo);
+      });
+      if (esDomicilio) ocultarError('tipo');
+    }
+
+    document.querySelectorAll('input[name="tipo"]').forEach((radio) => {
+      radio.addEventListener('change', actualizarDomicilio);
+    });
+
+    /* ---------------- Teléfono y notas ---------------- */
+    function soloDigitos(texto) {
+      return String(texto || '').split('').filter(function (caracter) {
+        return caracter >= '0' && caracter <= '9';
+      }).join('');
+    }
+
+    document.getElementById('telefono').addEventListener('input', (evento) => {
+      evento.target.value = soloDigitos(evento.target.value).slice(0, 8);
+      ocultarError('telefono');
+    });
+
+    document.getElementById('notas').addEventListener('input', (evento) => {
+      contadorNotas.textContent = String(evento.target.value.length);
+    });
+
+    ['nombre', 'colonia', 'calle', 'numeroCasa', 'referencias'].forEach((campo) => {
+      const control = document.getElementById(campo);
+      if (control) control.addEventListener('input', () => ocultarError(campo));
+    });
+
+    document.querySelectorAll('input[name="pago"]').forEach((radio) => {
+      radio.addEventListener('change', () => ocultarError('pago'));
+    });
+
+    /* ---------------- Errores ---------------- */
+    const MENSAJES = {
+      nombre: 'Escribe tu nombre completo.',
+      telefono: 'Escribe tu teléfono de 8 dígitos, por ejemplo 71234567.',
+      tipo: 'Elige si quieres entrega a domicilio o recoger en el local.',
+      colonia: 'Escribe la colonia.',
+      calle: 'Escribe la calle.',
+      numeroCasa: 'Escribe el número de casa o cómo reconocer el portón.',
+      referencias: 'Escribe al menos un punto de referencia.',
+      items: 'Agrega al menos un platillo a tu pedido.',
+      pago: 'Elige cómo vas a pagar.'
+    };
+
+    function mostrarError(campo, mensaje) {
+      const error = document.getElementById('error-' + campo);
+      const grupo = document.getElementById('campo-' + campo);
+      if (error) {
+        error.textContent = mensaje || MENSAJES[campo] || 'Revisa este dato.';
+        error.hidden = false;
+      }
+      if (grupo) grupo.classList.add('campo--error');
+      const control = document.getElementById(campo);
+      if (control) control.setAttribute('aria-invalid', 'true');
+    }
+
+    function ocultarError(campo) {
+      const error = document.getElementById('error-' + campo);
+      const grupo = document.getElementById('campo-' + campo);
+      if (error) { error.hidden = true; error.textContent = ''; }
+      if (grupo) grupo.classList.remove('campo--error');
+      const control = document.getElementById(campo);
+      if (control) control.removeAttribute('aria-invalid');
+    }
+
+    /* ---------------- Validación ---------------- */
+    function validar() {
+      const faltas = [];
+
+      const nombre = document.getElementById('nombre').value.trim();
+      if (nombre.length < 2) { mostrarError('nombre'); faltas.push('nombre'); }
+
+      const telefono = soloDigitos(document.getElementById('telefono').value);
+      if (!/^[0-9]{8}$/.test(telefono)) { mostrarError('telefono'); faltas.push('telefono'); }
+
+      const tipo = tipoElegido();
+      if (!tipo) { mostrarError('tipo'); faltas.push('tipo'); }
+
+      if (tipo === 'domicilio') {
+        ['colonia', 'calle', 'numeroCasa', 'referencias'].forEach((campo) => {
+          if (!document.getElementById(campo).value.trim()) {
+            mostrarError(campo);
+            faltas.push(campo);
+          }
+        });
+      }
+
+      const hayItems = menu.some((platillo) => (cantidades[platillo.id] || 0) > 0);
+      if (!hayItems) { mostrarError('items'); faltas.push('items'); }
+
+      const pago = document.querySelector('input[name="pago"]:checked');
+      if (!pago) { mostrarError('pago'); faltas.push('pago'); }
+
+      if (hayItems && calcularTotal() <= 0) {
+        avisar('El menú todavía no tiene precios configurados. Llama al negocio para hacer tu pedido.', 'info');
+        faltas.push('menu');
+      }
+
+      return faltas;
+    }
+
+    /* ---------------- Armar el pedido ---------------- */
+    function armarPedido() {
+      const tipo = tipoElegido();
+      const esDomicilio = tipo === 'domicilio';
+      const ahora = new Date();
+
+      const items = menu
+        .filter((platillo) => (cantidades[platillo.id] || 0) > 0)
+        .map((platillo) => ({
+          nombre: platillo.nombre,
+          cantidad: cantidades[platillo.id],
+          precio: platillo.precio
+        }));
+
+      return {
+        numero: numeroDePedido(ahora),
+        nombre: document.getElementById('nombre').value.trim(),
+        telefono: soloDigitos(document.getElementById('telefono').value),
+        tipo: tipo,
+        colonia: esDomicilio ? document.getElementById('colonia').value.trim() : '',
+        calle: esDomicilio ? document.getElementById('calle').value.trim() : '',
+        numeroCasa: esDomicilio ? document.getElementById('numeroCasa').value.trim() : '',
+        referencias: esDomicilio ? document.getElementById('referencias').value.trim() : '',
+        items: items,
+        total: Math.round(calcularTotal() * 100) / 100,
+        pago: document.querySelector('input[name="pago"]:checked').value,
+        notas: document.getElementById('notas').value.trim(),
+        estado: 'recibido',
+        creado: serverTimestamp()
+      };
+    }
+
+    /* ---------------- Enviar ---------------- */
+    formulario.addEventListener('submit', async (evento) => {
+      evento.preventDefault();
+      if (enviando) return;
+      avisar('');
+
+      const faltas = validar();
+
+      if (faltas.length) {
+        avisar(faltas.length === 1
+          ? 'Revisa el dato marcado en rojo.'
+          : 'Faltan ' + faltas.length + ' datos por revisar. Están marcados en rojo.');
+        const bloque = document.getElementById('campo-' + faltas[0]) ||
+                       document.getElementById('bloque-' + (faltas[0] === 'items' ? 'menu' : faltas[0]));
+        if (bloque) bloque.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+      }
+
+      if (!navigator.onLine) {
+        avisarSinConexion();
+        return;
+      }
+
+      enviando = true;
+      botonEnviar.disabled = true;
+      botonEnviar.textContent = 'Enviando…';
+
+      try {
+        const pedido = armarPedido();
+        await addDoc(collection(db, 'pedidos'), pedido);
+        mostrarConfirmacion(pedido);
+      } catch (error) {
+        console.warn('[El Torito] No se pudo guardar el pedido:', error);
+        const codigo = (error && error.code) || '';
+
+        if (codigo.includes('permission-denied')) {
+          avisar('No pudimos guardar el pedido con esos datos. Revisa el teléfono y la dirección, y vuelve a intentar.', 'error');
+        } else if (codigo.includes('unavailable') || codigo.includes('network')) {
+          avisarSinConexion();
+        } else {
+          avisar('No pudimos enviar tu pedido. Revisa tu conexión e intenta de nuevo.', 'error');
+        }
+      } finally {
+        enviando = false;
+        botonEnviar.disabled = false;
+        botonEnviar.textContent = 'Enviar pedido';
+      }
+    });
+
+    function avisarSinConexion() {
+      avisar('No hay conexión a internet. Conéctate y vuelve a intentar: los pedidos necesitan internet.', 'error');
+      avisoSinConexion.hidden = false;
+      avisoSinConexion.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    function mostrarConfirmacion(pedido) {
+      document.getElementById('numeroPedido').textContent = pedido.numero;
+      document.getElementById('confirmacionTotal').textContent = dinero(pedido.total);
+      document.getElementById('confirmacionTipo').textContent = ETIQUETAS_TIPO[pedido.tipo] || pedido.tipo;
+      document.getElementById('confirmacionPago').textContent = ETIQUETAS_PAGO[pedido.pago] || pedido.pago;
+
+      formulario.hidden = true;
+      confirmacion.hidden = false;
+      confirmacion.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    document.getElementById('botonOtro').addEventListener('click', () => {
+      window.location.reload();
+    });
+
+    /* ---------------- Arranque ---------------- */
+    function iniciar() {
+      actualizarDomicilio();
+      actualizarResumen();
+      cargarMenu();
+    }
+
+    iniciar();
+  </script>
 </body>
 </html>
