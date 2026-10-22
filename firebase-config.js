@@ -1,34 +1,19 @@
 /* ===========================================================
    El Torito ASADOS — Configuración de Firebase
    -----------------------------------------------------------
-   REEMPLAZAR: pega aquí el objeto que te da Firebase.
-   Consola de Firebase → Configuración del proyecto → Tus apps
-   → app web (</>) → Configuración del SDK → "Config".
-
-   Ejemplo de cómo se ve (NO copies este, copia el tuyo):
-
-   export const firebaseConfig = {
-     apiKey: "AIza...",
-     authDomain: "el-torito-asados.firebaseapp.com",
-     projectId: "el-torito-asados",
-     storageBucket: "el-torito-asados.appspot.com",
-     messagingSenderId: "123456789",
-     appId: "1:123456789:web:abc123"
-   };
-
-   Nota: este archivo se publica en GitHub Pages, así que la
-   configuración es visible para cualquiera. Eso es normal en
-   Firebase: lo que protege los datos son las reglas de
-   firestore.rules y los usuarios de Authentication, no esta clave.
+   Proyecto: el-torito-asados  (plan Spark)
+   Estos datos NO son secretos: van publicados en GitHub Pages.
+   Lo que protege la información son las reglas de
+   firestore.rules y los usuarios de Authentication.
    =========================================================== */
 
 export const firebaseConfig = {
-  apiKey: "[PEGAR CONFIGURACIÓN DE FIREBASE]",
-  authDomain: "[PEGAR CONFIGURACIÓN DE FIREBASE]",
-  projectId: "[PEGAR CONFIGURACIÓN DE FIREBASE]",
-  storageBucket: "[PEGAR CONFIGURACIÓN DE FIREBASE]",
-  messagingSenderId: "[PEGAR CONFIGURACIÓN DE FIREBASE]",
-  appId: "[PEGAR CONFIGURACIÓN DE FIREBASE]"
+  apiKey: "AIzaSyB6_QTtW5FmeQlKh-qa3523yWM2Inx9d_0",
+  authDomain: "el-torito-asados.firebaseapp.com",
+  projectId: "el-torito-asados",
+  storageBucket: "el-torito-asados.firebasestorage.app",
+  messagingSenderId: "704991896160",
+  appId: "1:704991896160:web:a07cbe8c8b1c5721ef1905"
 };
 
 /* Roles del negocio. Si cambian, se editan aquí y en firestore.rules. */
