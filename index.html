@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>El Torito ASADOS · Sopas y asados</title>
-  <meta name="description" content="El Torito ASADOS: sopas y asados. Haz tu pedido en línea.">
+  <title>Sopas y Asados El Torito · Sabor que te hace volver</title>
+  <meta name="description" content="Sopas y Asados El Torito: sabor que te hace volver. Haz tu pedido en línea.">
   <meta name="theme-color" content="#4A1002">
 
   <!-- PWA -->
@@ -417,8 +417,8 @@
       height: 168px;
       margin: 0 auto 18px;
       border-radius: 50%;
-      border: 5px solid #fff;
-      box-shadow: 0 12px 28px rgba(59, 30, 8, 0.28);
+      border: 5px solid #fff8ec;
+      box-shadow: 0 0 0 4px rgba(243, 176, 32, 0.85), 0 14px 30px rgba(59, 30, 8, 0.30);
     }
 
     .portada__nombre {
@@ -431,12 +431,29 @@
     }
 
     .portada__lema {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
       margin: 0 0 26px;
       font-size: 0.82rem;
       font-weight: 800;
       letter-spacing: 0.18em;
       text-transform: uppercase;
       color: var(--tinta-suave);
+    }
+
+    .portada__lema::before,
+    .portada__lema::after {
+      content: "";
+      width: 30px;
+      height: 2px;
+      border-radius: 2px;
+      background: linear-gradient(90deg, rgba(243, 176, 32, 0), rgba(243, 176, 32, 1));
+    }
+
+    .portada__lema::after {
+      background: linear-gradient(90deg, rgba(243, 176, 32, 1), rgba(243, 176, 32, 0));
     }
 
     .portada__acciones {
@@ -485,10 +502,10 @@
 <body>
   <header class="barra">
     <a class="barra__marca" href="index.html">
-      <img class="barra__logo" src="icon-192.png" alt="Logotipo de El Torito ASADOS" width="40" height="40">
+      <img class="barra__logo" src="icon-192.png" alt="Logotipo de Sopas y Asados El Torito" width="40" height="40">
       <span class="barra__texto">
-        <span class="barra__titulo">El Torito ASADOS</span>
-        <span class="barra__sub">Sopas y asados</span>
+        <span class="barra__titulo">Sopas y Asados El Torito</span>
+        <span class="barra__sub">Sabor que te hace volver</span>
       </span>
     </a>
   </header>
@@ -496,12 +513,15 @@
 
     <section class="portada">
       <img class="portada__logo" src="icon-512.png"
-           alt="Logotipo de El Torito ASADOS: un torito con sopa y carne asada" width="168" height="168">
-      <h1 class="portada__nombre">El Torito ASADOS</h1>
-      <p class="portada__lema">Sopas y asados</p>
+           alt="Logotipo de Sopas y Asados El Torito: un torito con sopa y carne asada" width="168" height="168">
+      <h1 class="portada__nombre">Sopas y Asados El Torito</h1>
+      <p class="portada__lema">Sabor que te hace volver</p>
 
       <div class="portada__acciones">
         <a class="boton boton--grande" href="pedidos.html">Hacer mi pedido</a>
+        <button type="button" class="boton boton--grande boton--secundario" data-instalar>
+          Descargar aplicación
+        </button>
         <a class="portada__acceso" href="login.html">Acceso del personal</a>
       </div>
 
@@ -512,7 +532,7 @@
     </section>
 
     <footer class="pie">
-      <p>El Torito ASADOS · Sopas y asados · © 2026</p>
+      <p>Sopas y Asados El Torito · Sabor que te hace volver · © 2026</p>
     </footer>
 
   </main>
@@ -528,5 +548,6 @@
     }
   </script>
 
+  <script src="apoyo.js" defer></script>
 </body>
 </html>

@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>Acceso del personal · El Torito ASADOS</title>
-  <meta name="description" content="Acceso del personal de El Torito ASADOS.">
+  <title>Acceso del personal · Sopas y Asados El Torito</title>
+  <meta name="description" content="Acceso del personal de Sopas y Asados El Torito.">
   <meta name="theme-color" content="#4A1002">
 
   <!-- PWA -->
@@ -474,20 +474,20 @@
 <body>
   <header class="barra">
     <a class="barra__marca" href="index.html">
-      <img class="barra__logo" src="icon-192.png" alt="Logotipo de El Torito ASADOS" width="40" height="40">
+      <img class="barra__logo" src="icon-192.png" alt="Logotipo de Sopas y Asados El Torito" width="40" height="40">
       <span class="barra__texto">
         <span class="barra__titulo">Acceso del personal</span>
-        <span class="barra__sub">El Torito ASADOS</span>
+        <span class="barra__sub">Sopas y Asados El Torito</span>
       </span>
     </a>
   </header>
   <main class="contenedor">
     <div class="acceso">
 
-      <img class="acceso__logo" src="icon-192.png" alt="El Torito ASADOS" width="96" height="96">
+      <img class="acceso__logo" src="icon-192.png" alt="Sopas y Asados El Torito" width="96" height="96">
       <h1 class="titulo" style="text-align:center">Acceso del personal</h1>
       <p class="parrafo" style="text-align:center">
-        Solo para empleados, repartidores y administración de El Torito ASADOS.
+        Solo para empleados, repartidores y administración de Sopas y Asados El Torito.
       </p>
 
       <p class="aviso aviso--error" id="avisoLogin" hidden></p>
@@ -520,7 +520,7 @@
     </div>
 
     <footer class="pie">
-      <p>El Torito ASADOS · Sopas y asados · © 2026</p>
+      <p>Sopas y Asados El Torito · Sabor que te hace volver · © 2026</p>
     </footer>
   </main>
 
@@ -567,14 +567,27 @@
     const ERROR_GENERICO = 'Correo o contraseña incorrectos. Revisa tus datos e intenta de nuevo.';
 
     /* Usuario autenticado pero sin rol válido: cerramos sesión y avisamos aquí mismo */
-    async function cerrarSinRol() {
+    async function cerrarSinRol(uid) {
       try {
         await signOut(auth);
       } catch (error) {
         /* si falla, igual mostramos el aviso */
       }
       clave.value = '';
-      avisar('Tu usuario no tiene un rol asignado. Pide a la administradora que lo configure en Firebase.', 'error');
+
+      /* Se muestra el UID que la app está buscando en la colección usuarios.
+         Así se puede copiar y pegar directo en Firestore. */
+      aviso.textContent = 'Tu usuario no tiene un rol asignado. Pide a la administradora que lo cree en Firebase, colección usuarios, con este ID de documento:';
+      aviso.className = 'aviso aviso--error';
+
+      const codigo = document.createElement('code');
+      codigo.textContent = uid || '(no disponible)';
+      codigo.style.cssText = 'display:block;margin-top:8px;padding:8px;background:#fff;border-radius:8px;' +
+        'font-family:ui-monospace,Menlo,Consolas,monospace;font-size:0.82rem;color:#2b1a0f;' +
+        'word-break:break-all;user-select:all;-webkit-user-select:all;';
+
+      aviso.appendChild(codigo);
+      aviso.hidden = false;
     }
 
     function avisar(mensaje, tipo) {
@@ -606,7 +619,7 @@
         const instantanea = await getDoc(doc(db, 'usuarios', usuario.uid));
         const datos = instantanea.exists() ? instantanea.data() : null;
         if (!datos || !ROLES_VALIDOS.includes(datos.rol)) {
-          await cerrarSinRol();
+          await cerrarSinRol(usuario.uid);
           return;
         }
         irAlPanel(datos.rol);
@@ -643,7 +656,7 @@
 
         /* Sin rol asignado: cerramos la sesión y avisamos */
         if (!datos || !ROLES_VALIDOS.includes(datos.rol)) {
-          await cerrarSinRol();
+          await cerrarSinRol(uid);
           return;
         }
 
@@ -700,5 +713,6 @@
       }
     });
   </script>
+  <script src="apoyo.js" defer></script>
 </body>
 </html>

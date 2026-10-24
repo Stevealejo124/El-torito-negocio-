@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>Administración · El Torito ASADOS</title>
-  <meta name="description" content="Panel de administración de El Torito ASADOS.">
+  <title>Administración · Sopas y Asados El Torito</title>
+  <meta name="description" content="Panel de administración de Sopas y Asados El Torito.">
   <meta name="theme-color" content="#4A1002">
 
   <!-- PWA -->
@@ -684,10 +684,10 @@
 <body>
   <header class="barra">
     <a class="barra__marca" href="index.html">
-      <img class="barra__logo" src="icon-192.png" alt="Logotipo de El Torito ASADOS" width="40" height="40">
+      <img class="barra__logo" src="icon-192.png" alt="Logotipo de Sopas y Asados El Torito" width="40" height="40">
       <span class="barra__texto">
         <span class="barra__titulo">Administración</span>
-        <span class="barra__sub">El Torito ASADOS</span>
+        <span class="barra__sub">Sopas y Asados El Torito</span>
       </span>
     </a>
     <div class="barra__acciones">
@@ -711,7 +711,8 @@
       <h2 class="tarjeta__titulo">Platillos</h2>
       <p class="tarjeta__nota">
         Edita el precio de venta y el costo de ingredientes, y marca cuáles están disponibles hoy.
-        Para agregar o quitar platillos se hace desde la consola de Firebase (colección <strong>menu</strong>).
+        Para <strong>agregar platillos nuevos</strong> se usa la página
+        <a href="cargar-menu.html">Cargar menú</a>.
       </p>
 
       <div id="listaPlatillos">
@@ -790,7 +791,7 @@
     </section>
 
     <footer class="pie">
-      <p>El Torito ASADOS · Sopas y asados · © 2026</p>
+      <p>Sopas y Asados El Torito · Sabor que te hace volver · © 2026</p>
     </footer>
   </main>
 
@@ -836,6 +837,13 @@
     const fechaDesde = document.getElementById('fechaDesde');
     const fechaHasta = document.getElementById('fechaHasta');
 
+    const ETIQUETAS_CATEGORIA = {
+      asados: 'Asados',
+      sopas: 'Sopas',
+      extras: 'Salsas y extras',
+      bebidas: 'Bebidas'
+    };
+
     let menu = [];               // [{ id, nombre, precio, categoria, disponible }]
     let costos = {};             // { idPlatillo: costo }
     let periodoActivo = 'hoy';
@@ -873,7 +881,7 @@
             id: documento.id,
             nombre: datos.nombre || '(sin nombre)',
             precio: Number(datos.precio) || 0,
-            categoria: datos.categoria === 'sopas' ? 'sopas' : 'asados',
+            categoria: ETIQUETAS_CATEGORIA[datos.categoria] || 'Asados',
             disponible: datos.disponible === true
           };
         });
@@ -1257,7 +1265,7 @@
       const comillas = (valor) => '"' + String(valor).replace(/"/g, '""') + '"';
       const lineas = [];
 
-      lineas.push(['El Torito ASADOS - Estimaciones', ultimosDatos.periodo].map(comillas).join(','));
+      lineas.push(['Sopas y Asados El Torito - Estimaciones', ultimosDatos.periodo].map(comillas).join(','));
       lineas.push(['Desde', fechaHora(ultimosDatos.desde), 'Hasta', fechaHora(ultimosDatos.hasta)].map(comillas).join(','));
       lineas.push('');
       lineas.push(['Platillo', 'Cantidad vendida', 'Ventas (USD)', 'Costo estimado (USD)', 'Ganancia estimada (USD)'].map(comillas).join(','));
@@ -1302,5 +1310,6 @@
 
     iniciar();
   </script>
+  <script src="apoyo.js" defer></script>
 </body>
 </html>

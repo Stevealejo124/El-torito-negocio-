@@ -1,7 +1,7 @@
 # El Torito ASADOS — Cómo conectar la app con Firebase
 
 Guía paso a paso para dejar la aplicación funcionando. Hazlo **en la computadora**, con la
-cuenta de Google de la clienta. Todo lo que se configura aquí es gratuito dentro del plan
+cuenta de Google del prestador, que es la dueña del proyecto de Firebase. Todo lo que se configura aquí es gratuito dentro del plan
 *gratuito* de Firebase (Spark), que alcanza de sobra para un negocio pequeño.
 
 > Antes de empezar: ten a mano los **cuatro correos** del personal y una **contraseña temporal**
@@ -9,9 +9,9 @@ cuenta de Google de la clienta. Todo lo que se configura aquí es gratuito dentr
 
 ---
 
-## 1. Crear el proyecto en la cuenta de la clienta
+## 1. Crear el proyecto (solo si hubiera que rehacerlo)
 
-1. Entra a <https://console.firebase.google.com> con la cuenta de Google de la clienta.
+1. Entra a <https://console.firebase.google.com> con la cuenta de Google del prestador.
 2. Toca **Crear proyecto** (o *Agregar proyecto*).
 3. Nombre del proyecto, por ejemplo: `el-torito-asados`.
 4. Google Analytics: **no es necesario**, puedes desactivarlo.
@@ -195,6 +195,43 @@ Roles y lo que puede hacer cada uno:
 
 ---
 
+---
+
+## Página «Cargar menú» (cargar-menu.html)
+
+Es la forma fácil de dejar el menú completo igual a la lista de precios del negocio, sin entrar a la
+consola de Firebase.
+
+1. Entra a la aplicación y toca **Acceso del personal**. Inicia sesión con la cuenta de la
+   **administradora**.
+2. En el panel de administración, toca el enlace **Cargar menú**.
+3. Revisa la lista: nombre, categoría, precio y costo de cada platillo.
+4. Toca **Guardar menú en la aplicación**.
+
+Qué hace al guardar:
+
+- Si el platillo ya existe, **actualiza** su nombre, precio, categoría y disponibilidad.
+- Si no existe, **lo crea**.
+- Los costos se guardan en la colección `costos` con el mismo identificador del platillo.
+- Los platillos que ya no se venden se **ocultan** (`disponible: false`) sin borrarse, así los
+  pedidos anteriores se conservan.
+
+El menú de partida está escrito dentro del archivo, en la constante `MENU`. Si cambia la lista de
+precios, se puede editar ahí y volver a guardar desde la misma página.
+
+---
+
+## Botones de ayuda (apoyo.js)
+
+El archivo `apoyo.js` se carga en todas las páginas y agrega, sin tocar el resto del código:
+
+- Un **botón flotante de WhatsApp** que abre la conversación al **+503 7561 9821** con el mensaje
+  ya escrito, para pedir ayuda cuando el sitio no funciona.
+- Un botón **«Descargar aplicación»** que aparece **siempre**. Si el navegador permite instalar de
+  forma automática, lo hace; si no (iPhone, o porque ya está instalada), muestra los pasos.
+- Mejoras visuales: foco visible del teclado, transiciones, líneas bajo las categorías del menú.
+
+
 ## Cómo subir los archivos (sin carpetas)
 
 GitHub no permite arrastrar carpetas cuando subes archivos por la web. Por eso este proyecto
@@ -239,7 +276,7 @@ Escríbelas o tenlas presentes antes de mostrar la app:
 
 ## Checklist rápido
 
-- [ ] Proyecto creado en la cuenta de la clienta
+- [ ] Proyecto creado en la cuenta del prestador
 - [ ] Authentication activado (correo y contraseña)
 - [ ] Firestore creado en la región elegida
 - [ ] Reglas de `firestore.rules` publicadas

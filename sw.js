@@ -1,29 +1,46 @@
 /* ===========================================================
    El Torito ASADOS — Service Worker
-   v2: el código se pide primero a la red, imágenes desde caché.
+   -----------------------------------------------------------
+   v2 (21/10/2026): los archivos de código (HTML, JS, manifest)
+   ahora se piden PRIMERO a la red. Así, cuando se sube un
+   cambio, se ve en la siguiente visita sin tener que borrar
+   la caché ni subir la versión a mano. Las imágenes sí salen
+   de caché porque cambian poco.
+
+   NO intercepta peticiones a Firebase ni a otros dominios:
+   los pedidos y el inicio de sesión necesitan internet.
+
+   Nota sobre Tailwind: esta app NO usa Tailwind por CDN; los
+   estilos van dentro de cada página, así que sin internet las
+   pantallas sí se ven con su diseño. Aun así, los pedidos y el
+   panel del personal NO funcionan sin conexión.
    =========================================================== */
 
-const VERSION = 'v2';
+const VERSION = 'v3';
 const CACHE = 'el-torito-' + VERSION;
 
+/* Archivos propios de la app que conviene tener en caché */
 const ARCHIVOS = [
   './index.html',
   './pedidos.html',
   './login.html',
   './empleados.html',
   './administracion.html',
+  './cargar-menu.html',
   './firebase-config.js',
   './comun.js',
+  './apoyo.js',
   './manifest.json',
   './icon-192.png',
   './icon-512.png'
 ];
 
-/* Código que puede cambiar: se pide primero a la red */
+/* Lo que se pide primero a la red (código que puede cambiar) */
 function esCodigo(url) {
   return /\.(html|js|json)$/i.test(url.pathname) || url.pathname.endsWith('/');
 }
 
+/* ---------- Instalación ---------- */
 self.addEventListener('install', (evento) => {
   evento.waitUntil(
     caches.open(CACHE)
@@ -36,6 +53,7 @@ self.addEventListener('install', (evento) => {
   );
 });
 
+/* ---------- Activación: borra versiones anteriores ---------- */
 self.addEventListener('activate', (evento) => {
   evento.waitUntil(
     caches.keys()
@@ -48,13 +66,21 @@ self.addEventListener('activate', (evento) => {
   );
 });
 
+/* ---------- Peticiones ---------- */
 self.addEventListener('fetch', (evento) => {
   const peticion = evento.request;
+
+  /* Solo GET */
   if (peticion.method !== 'GET') return;
 
   const url = new URL(peticion.url);
+
+  /* Solo el mismo origen. Firebase (firestore.googleapis.com),
+     gstatic, Google y cualquier otro dominio pasan de largo. */
   if (url.origin !== self.location.origin) return;
 
+  /* Navegación y archivos de código: RED PRIMERO, caché si no hay internet.
+     Así los cambios que se suben a GitHub se ven de inmediato. */
   if (peticion.mode === 'navigate' || esCodigo(url)) {
     evento.respondWith(
       fetch(peticion)
@@ -76,6 +102,7 @@ self.addEventListener('fetch', (evento) => {
     return;
   }
 
+  /* Imágenes y demás: caché primero, luego red */
   evento.respondWith(
     caches.match(peticion).then((enCache) => {
       if (enCache) return enCache;

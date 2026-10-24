@@ -1,8 +1,8 @@
 {
   "id": "./",
-  "name": "El Torito ASADOS",
+  "name": "Sopas y Asados El Torito",
   "short_name": "El Torito",
-  "description": "Sopas y asados El Torito. Haz tu pedido y consulta el estado de los pedidos del negocio.",
+  "description": "Sopas y Asados El Torito. Sabor que te hace volver. Haz tu pedido en línea.",
   "lang": "es-SV",
   "dir": "ltr",
   "start_url": "./index.html",
