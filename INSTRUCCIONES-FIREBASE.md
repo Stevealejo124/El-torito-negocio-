@@ -229,6 +229,9 @@ El archivo `apoyo.js` se carga en todas las páginas y agrega, sin tocar el rest
   ya escrito, para pedir ayuda cuando el sitio no funciona.
 - Un botón **«Descargar aplicación»** que aparece **siempre**. Si el navegador permite instalar de
   forma automática, lo hace; si no (iPhone, o porque ya está instalada), muestra los pasos.
+- Los enlaces a **Instagram** y **Facebook** del negocio: destacados en la portada, y pequeños en el
+  pie de las demás páginas. Las direcciones están al inicio de `apoyo.js`, en las constantes
+  `INSTAGRAM` y `FACEBOOK`; si cambian, se editan ahí.
 - Mejoras visuales: foco visible del teclado, transiciones, líneas bajo las categorías del menú.
 
 

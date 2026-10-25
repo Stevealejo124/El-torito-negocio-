@@ -20,6 +20,11 @@
   var WHATSAPP = '50375619821';           // +503 7561 9821
   var MENSAJE_AYUDA = 'Hola, necesito ayuda con el sitio web de Sopas y Asados El Torito.';
 
+  /* ------- Redes sociales del negocio -------
+     Para cambiarlas, se editan estas dos direcciones. */
+  var INSTAGRAM = 'https://www.instagram.com/sopasyasadoseltorito288/';
+  var FACEBOOK = 'https://www.facebook.com/share/14rudMJb97a/';
+
   /* =========================================================
      1. ESTILOS
      ========================================================= */
@@ -49,6 +54,20 @@
 
     '.pie{margin-top:26px}',
     '.pie p{opacity:.85}',
+
+    /* --- redes sociales en el pie de página --- */
+    '.pie__redes{display:flex;align-items:center;justify-content:center;gap:14px;'
+      + 'margin:12px 0 0;flex-wrap:wrap}',
+    '.pie__redes a{display:inline-flex;align-items:center;gap:7px;padding:8px 14px;'
+      + 'border-radius:999px;text-decoration:none;font-weight:800;font-size:12.5px;'
+      + 'border:2px solid rgba(74,16,2,.25);color:#4a1002;background:#fff;'
+      + 'transition:transform .14s ease,box-shadow .14s ease}',
+    '.pie__redes a:active{transform:scale(.96)}',
+    '@media (hover:hover){.pie__redes a:hover{transform:translateY(-1px);'
+      + 'box-shadow:0 4px 12px rgba(59,30,8,.18)}}',
+    '.pie__redes svg{display:block}',
+    '.pie__redes .red--ig{border-color:rgba(193,53,132,.55)}',
+    '.pie__redes .red--fb{border-color:rgba(24,119,242,.55)}',
 
     /* --- contenedor de los botones flotantes --- */
     '.apoyo-flotantes{position:fixed;right:14px;'
@@ -117,6 +136,15 @@
     + 'c-.17 0-.44.06-.66.31-.23.25-.87.85-.87 2.07 0 1.22.89 2.4 1.01 2.57.12.17 1.75 2.67 4.23 3.74'
     + '.59.26 1.05.41 1.41.52.59.19 1.13.16 1.56.1.48-.07 1.47-.6 1.68-1.18.21-.58.21-1.08.14-1.18'
     + '-.06-.11-.23-.17-.48-.29z"/></svg>';
+
+  var ICONO_IG = '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#c13584" '
+    + 'stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'
+    + '<rect x="2.5" y="2.5" width="19" height="19" rx="5.5"/><circle cx="12" cy="12" r="4.2"/>'
+    + '<circle cx="17.4" cy="6.6" r="1.1" fill="#c13584" stroke="none"/></svg>';
+
+  var ICONO_FB = '<svg width="17" height="17" viewBox="0 0 24 24" fill="#1877f2" aria-hidden="true">'
+    + '<path d="M13.5 21v-8h2.7l.4-3.1h-3.1V7.9c0-.9.25-1.5 1.55-1.5h1.65V3.6c-.3-.04-1.3-.13-2.45-.13'
+    + '-2.45 0-4.1 1.5-4.1 4.24V9.9H7.4V13h2.75v8z"/></svg>';
 
   var ICONO_DESCARGAR = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" '
     + 'stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" '
@@ -336,12 +364,51 @@
   }
 
   /* =========================================================
-     6. ARRANQUE
+     6. REDES SOCIALES EN EL PIE DE PÁGINA
+     ========================================================= */
+  function crearRedes() {
+    var pies = document.querySelectorAll('.pie');
+
+    for (var i = 0; i < pies.length; i++) {
+      if (pies[i].querySelector('.pie__redes')) continue;
+
+      /* Si la página ya muestra los enlaces en un lugar destacado
+         (por ejemplo la portada), no se repiten en el pie. */
+      if (document.querySelector('.redes')) continue;
+
+      var caja = document.createElement('div');
+      caja.className = 'pie__redes';
+
+      var ig = document.createElement('a');
+      ig.className = 'red--ig';
+      ig.href = INSTAGRAM;
+      ig.target = '_blank';
+      ig.rel = 'noopener';
+      ig.setAttribute('aria-label', 'Instagram de Sopas y Asados El Torito');
+      ig.innerHTML = ICONO_IG + '<span>Instagram</span>';
+
+      var fb = document.createElement('a');
+      fb.className = 'red--fb';
+      fb.href = FACEBOOK;
+      fb.target = '_blank';
+      fb.rel = 'noopener';
+      fb.setAttribute('aria-label', 'Facebook de Sopas y Asados El Torito');
+      fb.innerHTML = ICONO_FB + '<span>Facebook</span>';
+
+      caja.appendChild(ig);
+      caja.appendChild(fb);
+      pies[i].appendChild(caja);
+    }
+  }
+
+  /* =========================================================
+     7. ARRANQUE
      ========================================================= */
   function iniciar() {
     inyectarEstilos();
     crearBotones();
     conectarBotonesMarcados();
+    crearRedes();
   }
 
   if (document.readyState === 'loading') {
